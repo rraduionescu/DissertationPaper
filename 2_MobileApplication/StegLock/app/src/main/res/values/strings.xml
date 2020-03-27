@@ -1,3 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">StegLock</string>
+    <string name="etUsername">E-mail</string>
+    <string name="etPassword">Password</string>
+    <string name="bLogin">Log in</string>
+    <string name="bLoginFB">Log in with Facebook</string>
+    <string name="bLoginG">Log in with Google</string>
+    <string name="bRegister">Register</string>
+    <string name="etFirstName">First Name</string>
+    <string name="etLastName">Last Name</string>
+    <string name="etPasswordConfirmation">Password confirmation</string>
+    <string name="tLogSuccess">Logged in as </string>
+
+    <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>
 </resources>
