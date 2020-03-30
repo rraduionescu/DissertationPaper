@@ -72,6 +72,16 @@
             android:layout_height="wrap_content"
             android:text="@string/bRegister" />
 
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/bFBLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:clickable="false"
+            android:visibility="invisible"></com.facebook.login.widget.LoginButton>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

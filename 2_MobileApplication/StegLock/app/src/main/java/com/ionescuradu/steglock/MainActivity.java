@@ -4,10 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-//import android.graphics.Bitmap;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-//import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,39 +14,40 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-//import com.ase.ionescuradu.carexpress.R;
-//import com.ase.ionescuradu.carexpress.utilities.DatabaseTask;
-//import com.facebook.AccessToken;
-//import com.facebook.CallbackManager;
-//import com.facebook.FacebookCallback;
-//import com.facebook.FacebookException;
-//import com.facebook.Profile;
-//import com.facebook.login.LoginResult;
-//import com.facebook.login.widget.LoginButton;
+import androidx.annotation.NonNull;
+
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.utilities.DatabaseTask;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-//import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.AuthCredential;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.auth.GoogleAuthProvider;
-//import com.google.firebase.storage.FirebaseStorage;
-//import com.google.firebase.storage.StorageReference;
-//import com.nostra13.universalimageloader.core.ImageLoader;
-//import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-//import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-import static android.content.ContentValues.TAG;
-//import static com.facebook.AccessTokenManager.TAG;
+import static com.facebook.AccessTokenManager.TAG;
 
 //  Created by Ionescu Radu Stefan  //
 
@@ -55,9 +55,9 @@ public class MainActivity extends Activity
 {
     private Button bGoogle;
     private Button bFacebook;
-    //private LoginButton bFBLogin;
+    private LoginButton bFBLogin;
     private FirebaseAuth firebaseAuth;
-    //private CallbackManager fbCallbackManager;
+    private CallbackManager fbCallbackManager;
     private GoogleSignInClient gClient;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -67,16 +67,13 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //<editor-fold desc="Initialization">
         bGoogle = findViewById(R.id.bLoginG);
         bFacebook = findViewById(R.id.bLoginFB);
-        //bFBLogin = findViewById(R.id.bFBLogin);
+        bFBLogin = findViewById(R.id.bFBLogin);
         firebaseAuth = FirebaseAuth.getInstance();
-        //fbCallbackManager = CallbackManager.Factory.create();
+        fbCallbackManager = CallbackManager.Factory.create();
         gClient = GoogleSignIn.getClient(this, new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getResources().getString(R.string.oauth)).requestEmail().build());
-        //</editor-fold>
 
-        //<editor-fold desc="Button Listeners: Login/Facebook/Google">
         findViewById(R.id.bLogin).setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -87,7 +84,7 @@ public class MainActivity extends Activity
 
                 if (!String.valueOf(((EditText) findViewById(R.id.etUsername)).getText()).matches("") && !String.valueOf(((EditText) findViewById(R.id.etPassword)).getText()).matches(""))
                 {
-                    //loginWithEmail(email, password);
+                    loginWithEmail(email, password);
                 }
             }
         });
@@ -107,7 +104,7 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View view)
             {
-                //bFBLogin.performClick();
+                bFBLogin.performClick();
             }
         });
         bFacebook.setOnTouchListener(new View.OnTouchListener()
@@ -128,8 +125,8 @@ public class MainActivity extends Activity
             }
         });
 
-        //bFBLogin.setReadPermissions("email", "public_profile", "user_birthday");
-        /*bFBLogin.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>()
+        bFBLogin.setReadPermissions("email", "public_profile", "user_birthday");
+        bFBLogin.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>()
         {
             @Override
             public void onSuccess(LoginResult loginResult)
@@ -150,7 +147,6 @@ public class MainActivity extends Activity
                 Log.d(TAG, "facebook:onError", error);
             }
         });
-         */
 
         bGoogle.setOnClickListener(new View.OnClickListener()
         {
@@ -203,7 +199,7 @@ public class MainActivity extends Activity
             try
             {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                //loginWithGoogle(account);
+                loginWithGoogle(account);
             }
             catch (Exception e)
             {
@@ -212,7 +208,7 @@ public class MainActivity extends Activity
         }
         else
         {
-            //fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+            fbCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -232,10 +228,8 @@ public class MainActivity extends Activity
             bGoogle.setPadding(290, 0, 0, 0);
         }
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Login: email/facebook/google">
-    /*private void loginWithEmail(String email, String password)
+    private void loginWithEmail(String email, String password)
     {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
         {
@@ -244,7 +238,7 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
+                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     updateUI(user);
                 }
@@ -266,7 +260,7 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
+                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     Profile profile = Profile.getCurrentProfile();
                     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
@@ -291,7 +285,7 @@ public class MainActivity extends Activity
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -307,7 +301,7 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
+                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
@@ -337,10 +331,8 @@ public class MainActivity extends Activity
                 }
             }
         });
-    }*/
-    //</editor-fold>
+    }
 
-    //<editor-fold desc="Start Menu activity">
     private void updateUI(FirebaseUser user)
     {
         if (user != null)
@@ -350,5 +342,4 @@ public class MainActivity extends Activity
             startActivity(intent);
         }
     }
-    //</editor-fold>
 }

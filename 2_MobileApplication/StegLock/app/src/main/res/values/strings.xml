@@ -10,6 +10,11 @@
     <string name="etLastName">Last Name</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
     <string name="tLogSuccess">Logged in as </string>
+    <string name="loginFail">"Incorrect email and/or password!"</string>
+    <string name="bLogout">Log out</string>
+    <string name="tLogout">Log out successful!</string>
 
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">607855729801442</string>
+    <string name="fb_login_protocol_scheme">fb607855729801442</string>
 </resources>
