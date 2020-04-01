@@ -1,20 +1,48 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Created by Ionescu Radu Stefan -->
+
     <string name="app_name">StegLock</string>
+
+    <!-- EditText Strings -->
     <string name="etUsername">E-mail</string>
     <string name="etPassword">Password</string>
+    <string name="etFirstName">First Name</string>
+    <string name="etLastName">Last Name</string>
+    <string name="etPasswordConfirmation">Password confirmation</string>
+
+    <!-- Button Strings -->
     <string name="bLogin">Log in</string>
     <string name="bLoginFB">Log in with Facebook</string>
     <string name="bLoginG">Log in with Google</string>
     <string name="bRegister">Register</string>
-    <string name="etFirstName">First Name</string>
-    <string name="etLastName">Last Name</string>
-    <string name="etPasswordConfirmation">Password confirmation</string>
-    <string name="tLogSuccess">Logged in as </string>
-    <string name="loginFail">"Incorrect email and/or password!"</string>
     <string name="bLogout">Log out</string>
-    <string name="tLogout">Log out successful!</string>
+    <string name="bProfile">My profile</string>
+    <string name="bAbout">About StegLock</string>
 
+    <!-- Toast Strings -->
+    <string name="tLogSuccess">Logged in as </string>
+    <string name="tLogFail">"Incorrect email and/or password!"</string>
+    <string name="tLogout">Log out successful!</string>
+    <string name="tRegSuccess">, your registration was successful. Please log in!</string>
+    <string name="tRegFail">Please fill in correctly the fields with errors!</string>
+
+    <!-- Error Strings -->
+    <string name="fnError" tools:ignore="TypographyDashes">First name must begin with uppercase character followed by 1-15 lowercase characters!</string>
+    <string name="lnError" tools:ignore="TypographyDashes">Last name must begin with uppercase character followed by 1-15 lowercase characters!</string>
+    <string name="eError">Email must be [username]@[server].[server-type/location]!</string>
+    <string name="psError" tools:ignore="TypographyDashes">Password must be 10-15 characters long containing at least one lowercase character, one uppercase character, one digit and one special character( @, #, $, % )!</string>
+    <string name="cpsError">Password and Password confirmation must be identical!</string>
+    <string name="ppError">Profile picture must have at least almost square ratio!</string>
+
+    <!-- ContentDescriptor Strings -->
+    <string name="cdProfile">Profile picture</string>
+    <string name="cdLogo">StegLock Logo</string>
+    <string name="desc">description</string>
+
+    <!-- Firebase Strings -->
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>
     <string name="facebook_app_id">607855729801442</string>
     <string name="fb_login_protocol_scheme">fb607855729801442</string>
+
 </resources>

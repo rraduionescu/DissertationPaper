@@ -16,6 +16,7 @@
             android:id="@+id/ivLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/cdLogo"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
         <Space
@@ -29,7 +30,8 @@
             android:ems="10"
             android:hint="@string/etUsername"
             android:inputType="textEmailAddress"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -38,7 +40,8 @@
             android:ems="10"
             android:hint="@string/etPassword"
             android:inputType="textPassword"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:importantForAutofill="no" />
 
         <Button
             android:id="@+id/bLogin"

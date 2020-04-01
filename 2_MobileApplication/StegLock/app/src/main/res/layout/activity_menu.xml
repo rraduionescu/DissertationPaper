@@ -13,6 +13,18 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/bProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bProfile" />
+
+        <Button
+            android:id="@+id/bAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bAbout" />
+
+        <Button
             android:id="@+id/bLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

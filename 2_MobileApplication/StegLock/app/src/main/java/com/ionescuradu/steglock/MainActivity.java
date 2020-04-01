@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.ionescuradu.steglock.R;
-import com.ionescuradu.steglock.utilities.DatabaseTask;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -238,13 +236,12 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     updateUI(user);
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.tLogFail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -260,7 +257,6 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     Profile profile = Profile.getCurrentProfile();
                     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
@@ -272,7 +268,7 @@ public class MainActivity extends Activity
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
                         {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            FirebaseStorage storage = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
                             assert user != null;
                             StorageReference p = storage.getReference().child("ProfilePictures/" + user.getUid());
                             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -285,7 +281,7 @@ public class MainActivity extends Activity
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, getResources().getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.tLogFail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -301,7 +297,6 @@ public class MainActivity extends Activity
             {
                 if (task.isSuccessful())
                 {
-                    //new DatabaseTask(getApplicationContext(), getIntent()).execute("insert_client");
                     FirebaseUser user = firebaseAuth.getCurrentUser();
                     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
                     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
@@ -327,7 +322,7 @@ public class MainActivity extends Activity
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.tLogFail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
