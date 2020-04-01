@@ -57,26 +57,57 @@
             android:layout_height="40dp" />
 
         <Button
-            android:id="@+id/bLoginFB"
+            android:id="@+id/bRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bLoginFB" />
-
-        <Button
-            android:id="@+id/bLoginG"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bLoginG" />
+            android:text="@string/bRegister" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="40dp" />
 
         <Button
-            android:id="@+id/bRegister"
+            android:id="@+id/bLoginFB"
+
+            android:paddingEnd="0dp"
+            android:paddingStart="290dp"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bRegister" />
+            android:layout_height="45dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp"
+
+            android:background="@drawable/fbshape"
+
+            android:drawableStart="@drawable/com_facebook_button_login_logo"
+            android:drawablePadding="10dp"
+
+            android:textColor="@color/com_facebook_button_text_color"
+            android:text="@string/bLoginFB"
+            android:textAlignment="textStart" />
+
+        <Button
+            android:id="@+id/bLoginG"
+
+            android:paddingEnd="0dp"
+            android:paddingStart="280dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/gshape"
+
+            android:drawableStart="@drawable/common_google_signin_btn_icon_dark"
+            android:drawablePadding="10dp"
+
+            android:textAlignment="textStart"
+            android:text="@string/bLoginG" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/bFBLogin"
@@ -86,7 +117,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
             android:clickable="false"
-            android:visibility="invisible"></com.facebook.login.widget.LoginButton>
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

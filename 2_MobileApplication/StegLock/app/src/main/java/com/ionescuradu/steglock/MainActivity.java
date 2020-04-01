@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,6 +66,8 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
 		bGoogle = findViewById(R.id.bLoginG);
 		bFacebook = findViewById(R.id.bLoginFB);
 		bFBLogin = findViewById(R.id.bFBLogin);
@@ -110,14 +113,10 @@ public class MainActivity extends Activity
 			@SuppressLint("ClickableViewAccessibility")
 			public boolean onTouch(View v, MotionEvent event)
 			{
-				switch (event.getAction())
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
 				{
-					case MotionEvent.ACTION_DOWN:
-					{
-						v.getBackground().setColorFilter(0xe0324b81, PorterDuff.Mode.SRC_ATOP);
-						v.invalidate();
-						break;
-					}
+					v.getBackground().setColorFilter(0xe0324b81, PorterDuff.Mode.SRC_ATOP);
+					v.invalidate();
 				}
 				return false;
 			}
@@ -160,14 +159,10 @@ public class MainActivity extends Activity
 			@SuppressLint("ClickableViewAccessibility")
 			public boolean onTouch(View v, MotionEvent event)
 			{
-				switch (event.getAction())
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
 				{
-					case MotionEvent.ACTION_DOWN:
-					{
-						v.getBackground().setColorFilter(0xe0eaeaea, PorterDuff.Mode.SRC_ATOP);
-						v.invalidate();
-						break;
-					}
+					v.getBackground().setColorFilter(0xe0eaeaea, PorterDuff.Mode.SRC_ATOP);
+					v.invalidate();
 				}
 				return false;
 			}
@@ -197,6 +192,7 @@ public class MainActivity extends Activity
 			try
 			{
 				GoogleSignInAccount account = task.getResult(ApiException.class);
+				assert account != null;
 				loginWithGoogle(account);
 			}
 			catch (Exception e)
