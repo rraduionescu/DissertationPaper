@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 
 //  Created by Ionescu Radu Stefan  //
 
+@SuppressWarnings("FieldCanBeLocal")
 public class RegisterActivity extends AppCompatActivity
 {
     private EditText etFirstName;
@@ -177,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         Bitmap bmpImg;
         if (requestCode == 2 && resultCode == RESULT_OK)
         {
@@ -217,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity
                 {
                     FirebaseStorage storage = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
                     firebaseUser = firebaseAuth.getCurrentUser();
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(String.valueOf(etFirstName.getText()) + " " + String.valueOf(etLastName.getText())).build();
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(etFirstName.getText() + " " + etLastName.getText()).build();
                     firebaseUser.updateProfile(profileUpdates);
                     BitmapDrawable drawable = (BitmapDrawable) ivProfile.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
@@ -241,7 +243,7 @@ public class RegisterActivity extends AppCompatActivity
     {
         if (user != null)
         {
-            Toast.makeText(getApplicationContext(), String.valueOf(((EditText) findViewById(R.id.etFirstName)).getText()) + " " + String.valueOf(((EditText) findViewById(R.id.etLastName)).getText()) + getResources().getString(R.string.tRegSuccess), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), ((EditText) findViewById(R.id.etFirstName)).getText() + " " + ((EditText) findViewById(R.id.etLastName)).getText() + getResources().getString(R.string.tRegSuccess), Toast.LENGTH_SHORT).show();
             firebaseAuth.signOut();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
