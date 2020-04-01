@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AboutActivity">
+    tools:context=".ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:paddingTop="15dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="15dp"
-                android:src="@drawable/ic_launcher_foreground"></ImageView>
+                android:src="@drawable/ic_launcher_foreground"/>
 
         </LinearLayout>
 
@@ -54,7 +54,7 @@
                 android:inputType="text|textPersonName"
                 android:textAlignment="center"
                 tools:layout_editor_absoluteX="399dp"
-                tools:layout_editor_absoluteY="405dp"></EditText>
+                tools:layout_editor_absoluteY="405dp"/>
 
             <EditText
                 android:id="@+id/etEmail"
@@ -65,7 +65,7 @@
                 android:hint="@string/desc"
                 android:importantForAutofill="no"
                 android:inputType="text|textEmailAddress"
-                android:textAlignment="center"></EditText>
+                android:textAlignment="center"/>
 
         </LinearLayout>
 
