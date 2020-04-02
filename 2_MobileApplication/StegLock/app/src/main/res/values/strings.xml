@@ -11,6 +11,10 @@
     <string name="etLastName">Last Name</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
 
+    <!-- TextView Strings -->
+    <string name="tvDont">Don\'t have an account?</string>
+    <string name="tvOr">OR</string>
+
     <!-- Button Strings -->
     <string name="bLogin">Log in</string>
     <string name="bLoginFB">Log in with Facebook</string>

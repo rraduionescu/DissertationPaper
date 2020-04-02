@@ -34,7 +34,10 @@
             android:hint="@string/etUsername"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -44,27 +47,50 @@
             android:hint="@string/etPassword"
             android:inputType="textPassword"
             android:textAlignment="center"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"/>
 
         <Button
             android:id="@+id/bLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bLogin" />
+            android:text="@string/bLogin"
+            android:background="@drawable/bshape"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp"/>
 
-        <Space
+        <TextView
+            android:id="@+id/tvDont"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="@string/tvDont"
+            android:textAlignment="center"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bRegister" />
+            android:text="@string/bRegister"
+            android:background="@drawable/bshape"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp" />
 
-        <Space
+        <TextView
+            android:id="@+id/tvOr"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="@string/tvOr"
+            android:textAlignment="center"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bLoginFB"
@@ -106,6 +132,7 @@
             android:drawableStart="@drawable/common_google_signin_btn_icon_dark"
             android:drawablePadding="10dp"
 
+            android:textColor="#000000"
             android:textAlignment="textStart"
             android:text="@string/bLoginG" />
 
