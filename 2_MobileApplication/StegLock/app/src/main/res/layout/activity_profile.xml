@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
-        android:gravity="center"
+        android:gravity="top"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -24,37 +24,76 @@
 
             <ImageView
                 android:id="@+id/ivProfile"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:contentDescription="@string/desc"
                 android:paddingLeft="30dp"
                 android:paddingTop="15dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="15dp"
-                android:src="@drawable/ic_launcher_foreground"/>
+                android:src="@drawable/ic_launcher_foreground" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <EditText
-                android:id="@+id/etName"
+            <TextView
+                android:id="@+id/tvNickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:text="@string/tvNickname"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/etNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:ems="10"
                 android:enabled="false"
                 android:hint="@string/desc"
                 android:importantForAutofill="no"
                 android:inputType="text|textPersonName"
                 android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textColorHighlight="@color/colorAccent"
+                android:textColorHint="@color/colorAccent"
                 tools:layout_editor_absoluteX="399dp"
-                tools:layout_editor_absoluteY="405dp"/>
+                tools:layout_editor_absoluteY="405dp" />
+
+            <TextView
+                android:id="@+id/tvFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tvFullname"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="@string/desc"
+                android:importantForAutofill="no"
+                android:inputType="text|textPersonName"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textColorHighlight="@color/colorAccent"
+                android:textColorHint="@color/colorAccent"
+                tools:layout_editor_absoluteX="399dp"
+                tools:layout_editor_absoluteY="405dp" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tvEmail"
+                android:textAlignment="center" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -65,7 +104,10 @@
                 android:hint="@string/desc"
                 android:importantForAutofill="no"
                 android:inputType="text|textEmailAddress"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textColorHighlight="@color/colorAccent"
+                android:textColorHint="@color/colorAccent" />
 
         </LinearLayout>
 

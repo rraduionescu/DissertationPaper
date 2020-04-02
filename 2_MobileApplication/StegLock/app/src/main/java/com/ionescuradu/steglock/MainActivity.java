@@ -67,6 +67,7 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+		findViewById(R.id.ivLogo).setForeground(getDrawable(R.drawable.logo));
 
 		bGoogle = findViewById(R.id.bLoginG);
 		bFacebook = findViewById(R.id.bLoginFB);

@@ -14,6 +14,9 @@
     <!-- TextView Strings -->
     <string name="tvDont">Don\'t have an account?</string>
     <string name="tvOr">OR</string>
+    <string name="tvNickname">Nickname</string>
+    <string name="tvFullname">Full name</string>
+    <string name="tvEmail">E-mail</string>
 
     <!-- Button Strings -->
     <string name="bLogin">Log in</string>
@@ -43,6 +46,10 @@
     <string name="cdProfile">Profile picture</string>
     <string name="cdLogo">StegLock Logo</string>
     <string name="desc">description</string>
+
+    <!-- About Strings -->
+    <string name="about1">About StegLock application</string>
+    <string name="about2">StegLock application description</string>
 
     <!-- Firebase Strings -->
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>

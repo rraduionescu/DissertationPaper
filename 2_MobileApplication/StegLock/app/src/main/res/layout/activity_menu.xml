@@ -18,19 +18,34 @@
             android:id="@+id/bProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bProfile" />
+            android:text="@string/bProfile"
+            android:background="@drawable/bshape"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp" />
 
         <Button
             android:id="@+id/bAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bAbout" />
+            android:text="@string/bAbout"
+            android:background="@drawable/bshape"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp" />
 
         <Button
             android:id="@+id/bLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bLogout" />
+            android:text="@string/bLogout"
+            android:background="@drawable/bshape"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp"/>
 
     </LinearLayout>
 
