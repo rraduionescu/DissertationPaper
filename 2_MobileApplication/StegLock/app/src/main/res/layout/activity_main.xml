@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
             android:contentDescription="@string/cdLogo"
             app:srcCompat="@drawable/logo" />
 
