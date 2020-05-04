@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1068587871489",
+    "firebase_url": "https://steglockmapp.firebaseio.com",
+    "project_id": "steglockmapp",
+    "storage_bucket": "steglockmapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068587871489:android:216e527e64ced46bb7ff00",
+        "android_client_info": {
+          "package_name": "com.ionescuradu.steglock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUUjdIV3_LS29Vwln5oVtJE2I9HL_bhIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
