@@ -22,6 +22,16 @@ public class MenuActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
 
+		findViewById(R.id.bChatMenu).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), ChatTabActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		findViewById(R.id.bProfile).setOnClickListener(new View.OnClickListener()
 		{
 			@Override

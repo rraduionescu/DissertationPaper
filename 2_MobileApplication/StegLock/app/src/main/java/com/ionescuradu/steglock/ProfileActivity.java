@@ -1,5 +1,6 @@
 package com.ionescuradu.steglock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
@@ -12,8 +13,11 @@ import android.widget.ImageView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,6 +26,8 @@ import com.google.firebase.storage.StorageReference;
 public class ProfileActivity extends AppCompatActivity
 {
 	private DatabaseReference databaseReference;
+	private FirebaseAuth firebaseAuth;
+	private FirebaseUser firebaseUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,15 +37,28 @@ public class ProfileActivity extends AppCompatActivity
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-		FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-		if (firebaseUser != null)
+		firebaseAuth = FirebaseAuth.getInstance();
+		firebaseUser = firebaseAuth.getCurrentUser();
+		databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+		String[] name = firebaseUser.getDisplayName().split(" ");
+		databaseReference.addValueEventListener(new ValueEventListener()
 		{
-			((EditText) findViewById(R.id.etNicknameProfile)).setText("j");
-			((EditText) findViewById(R.id.etName)).setText(firebaseUser.getDisplayName());
-			((EditText) findViewById(R.id.etEmail)).setText(firebaseUser.getEmail());
-		}
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+			{
+				User user = dataSnapshot.getValue(User.class);
+				((EditText) findViewById(R.id.etNicknameProfile)).setText(user.getNickname());
+				((EditText) findViewById(R.id.etFirstNameProfile)).setText(name[0]);
+				((EditText) findViewById(R.id.etLastNameProfile)).setText(name[1]);
+				((EditText) findViewById(R.id.etEmail)).setText(firebaseUser.getEmail());
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError)
+			{
+
+			}
+		});
 
 		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 		StorageReference reference = null;

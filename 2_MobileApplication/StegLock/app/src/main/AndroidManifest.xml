@@ -11,16 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ChatTabActivity"></activity>
         <activity
             android:name=".AboutActivity"
-            android:label="About StegLock"
-            />
-
+            android:label="About StegLock" />
         <activity
             android:name=".ProfileActivity"
-            android:label="MyProfile"
-            />
+            android:label="MyProfile" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -44,12 +41,10 @@
         </activity>
         <activity
             android:name=".MenuActivity"
-            android:label="Main Menu"
-            />
+            android:label="Main Menu" />
         <activity
             android:name=".RegisterActivity"
-            android:label="Register"
-            />
+            android:label="Register" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

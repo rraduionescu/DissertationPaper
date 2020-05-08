@@ -9,108 +9,120 @@
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:gravity="top"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:contentDescription="@string/desc"
-                android:paddingLeft="30dp"
-                android:paddingTop="15dp"
-                android:paddingRight="30dp"
-                android:paddingBottom="15dp"
-                android:src="@drawable/ic_launcher_foreground" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="250dp"
             android:layout_height="250dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:contentDescription="@string/desc"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="15dp"
+            android:src="@drawable/ic_launcher_foreground" />
 
-            <TextView
-                android:id="@+id/tvNickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tvNickname"
-                android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvNickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tvNickname"
+            android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/etNicknameProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="@string/desc"
-                android:importantForAutofill="no"
-                android:inputType="text|textPersonName"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textColorHighlight="@color/colorAccent"
-                android:textColorHint="@color/colorAccent"
-                tools:layout_editor_absoluteX="399dp"
-                tools:layout_editor_absoluteY="405dp" />
+        <EditText
+            android:id="@+id/etNicknameProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/desc"
+            android:importantForAutofill="no"
+            android:inputType="text|textPersonName"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
+            tools:layout_editor_absoluteX="399dp"
+            tools:layout_editor_absoluteY="405dp" />
 
-            <TextView
-                android:id="@+id/tvFullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tvFullname"
-                android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/etFirstName"
+            android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="@string/desc"
-                android:importantForAutofill="no"
-                android:inputType="text|textPersonName"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textColorHighlight="@color/colorAccent"
-                android:textColorHint="@color/colorAccent"
-                tools:layout_editor_absoluteX="399dp"
-                tools:layout_editor_absoluteY="405dp" />
+        <EditText
+            android:id="@+id/etFirstNameProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/desc"
+            android:importantForAutofill="no"
+            android:inputType="text|textPersonName"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
+            tools:layout_editor_absoluteX="399dp"
+            tools:layout_editor_absoluteY="405dp" />
 
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tvEmail"
-                android:textAlignment="center" />
+        <TextView
+            android:id="@+id/tvLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/etLastName"
+            android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="@string/desc"
-                android:importantForAutofill="no"
-                android:inputType="text|textEmailAddress"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textColorHighlight="@color/colorAccent"
-                android:textColorHint="@color/colorAccent" />
+        <EditText
+            android:id="@+id/etLastNameProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/desc"
+            android:importantForAutofill="no"
+            android:inputType="text|textPersonName"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
+            tools:layout_editor_absoluteX="399dp"
+            tools:layout_editor_absoluteY="405dp" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tvEmail"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/desc"
+            android:importantForAutofill="no"
+            android:inputType="text|textEmailAddress"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
+            android:textColorHint="@color/colorAccent" />
 
     </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
