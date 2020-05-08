@@ -22,11 +22,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.utilities.TextValidator;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,16 +38,18 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity
 {
-	private EditText     etFirstName;
-	private EditText     etLastName;
-	private EditText     etEmail;
-	private EditText     etPassword;
-	private EditText     etConfirmPassword;
-	private EditText     etR;
-	private EditText     etL;
-	private ImageView    ivProfile;
-	private FirebaseUser firebaseUser;
-	private FirebaseAuth firebaseAuth;
+	private EditText          etNickname;
+	private EditText          etFirstName;
+	private EditText          etLastName;
+	private EditText          etEmail;
+	private EditText          etPassword;
+	private EditText          etConfirmPassword;
+	private EditText          etR;
+	private EditText          etL;
+	private ImageView         ivProfile;
+	private FirebaseUser      firebaseUser;
+	private FirebaseAuth      firebaseAuth;
+	private DatabaseReference databaseReference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -52,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 
+		etNickname = findViewById(R.id.etNicknameRegister);
 		etFirstName = findViewById(R.id.etFirstName);
 		etLastName = findViewById(R.id.etLastName);
 		etEmail = findViewById(R.id.etEmail);
@@ -64,11 +70,10 @@ public class RegisterActivity extends AppCompatActivity
 
 		etL.setClickable(false);
 		etR.setClickable(false);
-		if (Objects.requireNonNull(ivProfile.getDrawable().getConstantState()).equals(getResources().getDrawable(R.drawable.ic_launcher_foreground, null).getConstantState()))
-		{
-			etR.setError(getResources().getString(R.string.ppError));
-			etR.requestFocus();
-		}
+		etL.setFocusable(false);
+
+		etR.setError(getResources().getString(R.string.ppError));
+		etR.requestFocus();
 
 		ivProfile.setOnClickListener(new View.OnClickListener()
 		{
@@ -77,6 +82,20 @@ public class RegisterActivity extends AppCompatActivity
 			{
 				Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				startActivityForResult(i, 2);
+			}
+		});
+
+		etNickname.addTextChangedListener(new TextValidator(etNickname)
+		{
+			@Override
+			public void validate(TextView textView, String text)
+			{
+				Pattern p = Pattern.compile("[a-z]{1,15}?");
+				Matcher m = p.matcher(text);
+				if (!m.matches())
+				{
+					textView.setError(getResources().getString(R.string.fnError));
+				}
 			}
 		});
 
@@ -219,6 +238,12 @@ public class RegisterActivity extends AppCompatActivity
 				{
 					FirebaseStorage storage = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 					firebaseUser = firebaseAuth.getCurrentUser();
+					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+					HashMap<String, String> details = new HashMap<>();
+					details.put("id", firebaseUser.getUid());
+					details.put("first_name", etFirstName.getText().toString());
+					details.put("last_name", etLastName.getText().toString());
+					details.put("nickname", etNickname.getText().toString());
 					UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(etFirstName.getText() + " " + etLastName.getText()).build();
 					firebaseUser.updateProfile(profileUpdates);
 					BitmapDrawable        drawable              = (BitmapDrawable) ivProfile.getDrawable();
@@ -229,7 +254,17 @@ public class RegisterActivity extends AppCompatActivity
 					StorageReference storageReference = storage.getReference();
 					StorageReference profiles         = storageReference.child("ProfilePictures/" + firebaseUser.getUid());
 					profiles.putBytes(data);
-					updateUI(firebaseUser);
+					databaseReference.setValue(details).addOnCompleteListener(new OnCompleteListener<Void>()
+					{
+						@Override
+						public void onComplete(@NonNull Task<Void> task)
+						{
+							if (task.isSuccessful())
+							{
+								updateUI(firebaseUser);
+							}
+						}
+					});
 				}
 				else
 				{

@@ -9,6 +9,7 @@
     <string name="etPassword">Password</string>
     <string name="etFirstName">First Name</string>
     <string name="etLastName">Last Name</string>
+    <string name="etNickname">Nickname</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
 
     <!-- TextView Strings -->

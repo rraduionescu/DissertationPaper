@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -19,6 +21,8 @@ import com.google.firebase.storage.StorageReference;
 
 public class ProfileActivity extends AppCompatActivity
 {
+	private DatabaseReference databaseReference;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -32,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity
 
 		if (firebaseUser != null)
 		{
+			((EditText) findViewById(R.id.etNicknameProfile)).setText("j");
 			((EditText) findViewById(R.id.etName)).setText(firebaseUser.getDisplayName());
 			((EditText) findViewById(R.id.etEmail)).setText(firebaseUser.getEmail());
 		}

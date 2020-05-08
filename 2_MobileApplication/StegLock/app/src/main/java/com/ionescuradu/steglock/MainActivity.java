@@ -37,6 +37,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -44,6 +46,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.facebook.AccessTokenManager.TAG;
@@ -56,6 +59,7 @@ public class MainActivity extends Activity
 	private Button             bFacebook;
 	private LoginButton        bFBLogin;
 	private FirebaseAuth       firebaseAuth;
+	private DatabaseReference  databaseReference;
 	private CallbackManager    fbCallbackManager;
 	private GoogleSignInClient gClient;
 
@@ -274,7 +278,23 @@ public class MainActivity extends Activity
 							p.putBytes(data);
 						}
 					});
-					updateUI(user);
+					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+					HashMap<String, String> details = new HashMap<>();
+					details.put("id", user.getUid());
+					details.put("first_name", profile.getFirstName());
+					details.put("last_name", profile.getLastName());
+					details.put("nickname", user.getDisplayName());
+					databaseReference.setValue(details).addOnCompleteListener(new OnCompleteListener<Void>()
+					{
+						@Override
+						public void onComplete(@NonNull Task<Void> task)
+						{
+							if (task.isSuccessful())
+							{
+								updateUI(user);
+							}
+						}
+					});
 				}
 				else
 				{
@@ -315,7 +335,23 @@ public class MainActivity extends Activity
 							p.putBytes(data);
 						}
 					});
-					updateUI(user);
+					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+					HashMap<String, String> details = new HashMap<>();
+					details.put("id", user.getUid());
+					details.put("first_name", acct.getGivenName());
+					details.put("last_name", acct.getFamilyName());
+					details.put("nickname", user.getDisplayName());
+					databaseReference.setValue(details).addOnCompleteListener(new OnCompleteListener<Void>()
+					{
+						@Override
+						public void onComplete(@NonNull Task<Void> task)
+						{
+							if (task.isSuccessful())
+							{
+								updateUI(user);
+							}
+						}
+					});
 				}
 				else
 				{
