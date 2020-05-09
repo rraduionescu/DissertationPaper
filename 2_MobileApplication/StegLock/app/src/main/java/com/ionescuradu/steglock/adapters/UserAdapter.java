@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.activities.MessageActivity;
+import com.ionescuradu.steglock.classes.User;
 
 import java.util.List;
+
+//  Created by Ionescu Radu Stefan  //
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>
 {

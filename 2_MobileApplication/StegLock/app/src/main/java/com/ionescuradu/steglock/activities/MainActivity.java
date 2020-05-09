@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ionescuradu.steglock.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;

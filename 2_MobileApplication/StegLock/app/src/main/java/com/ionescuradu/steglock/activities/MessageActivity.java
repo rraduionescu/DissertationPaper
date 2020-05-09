@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,12 +29,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ionescuradu.steglock.classes.Message;
+import com.ionescuradu.steglock.adapters.MessageAdapter;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.classes.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+//  Created by Ionescu Radu Stefan  //
 
 public class MessageActivity extends AppCompatActivity
 {
@@ -74,12 +80,6 @@ public class MessageActivity extends AppCompatActivity
 			}
 		});
 
-		recyclerViewMessages = findViewById(R.id.recyclerMessages);
-		recyclerViewMessages.setHasFixedSize(true);
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-		linearLayoutManager.setStackFromEnd(true);
-		recyclerViewMessages.setLayoutManager(linearLayoutManager);
-
 		intent = getIntent();
 		String userId = intent.getStringExtra("userId");
 		profilePicture = findViewById(R.id.profilePictureChat);
@@ -102,7 +102,7 @@ public class MessageActivity extends AppCompatActivity
 				}
 				else
 				{
-					Toast.makeText(MessageActivity.this, R.string.msgError, Toast.LENGTH_SHORT);
+					Toast.makeText(MessageActivity.this, R.string.msgError, Toast.LENGTH_SHORT).show();
 				}
 				etMessage.setText("");
 			}
@@ -132,6 +132,8 @@ public class MessageActivity extends AppCompatActivity
 						}
 					});
 				}
+
+				readMessages(firebaseUser.getUid(), userId);
 			}
 
 			@Override
@@ -145,15 +147,15 @@ public class MessageActivity extends AppCompatActivity
 	private void sendMessage(String sender, String receiver, String message)
 	{
 		DatabaseReference       reference = FirebaseDatabase.getInstance().getReference();
-		HashMap<String, Object> hashmap   = new HashMap<>();
-		hashmap.put("sender", sender);
-		hashmap.put("receiver", receiver);
-		hashmap.put("message", message);
+		HashMap<String, Object> hashMap   = new HashMap<>();
+		hashMap.put("sender", sender);
+		hashMap.put("receiver", receiver);
+		hashMap.put("message", message);
 
-		reference.child("Chats").push().setValue(hashmap);
+		reference.child("Chats").push().setValue(hashMap);
 	}
 
-	private void readMesage(String myId, String userId, String message, String img)
+	private void readMessages(final String myId, final String userId)
 	{
 		messages = new ArrayList<>();
 		databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -163,13 +165,20 @@ public class MessageActivity extends AppCompatActivity
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
 			{
 				messages.clear();
-				for(DataSnapshot snapshot : dataSnapshot.getChildren())
+				for (DataSnapshot snapshot : dataSnapshot.getChildren())
 				{
-					Message message1 = snapshot.getValue(Message.class);
-					if(message1.getReceiver().equals(myId) && message1.getSender().equals(userId) || message1.getReceiver().equals(userId) && message1.getSender().equals(myId))
+					Message databaseMessage = snapshot.getValue(Message.class);
+					if (databaseMessage.getReceiver().equals(myId) && databaseMessage.getSender().equals(userId) || databaseMessage.getReceiver().equals(userId) && databaseMessage.getSender().equals(myId))
 					{
-
+						messages.add(databaseMessage);
 					}
+					messageAdapter = new MessageAdapter(MessageActivity.this, messages);
+					recyclerViewMessages = findViewById(R.id.recyclerMessages);
+					recyclerViewMessages.setHasFixedSize(true);
+					LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+					linearLayoutManager.setStackFromEnd(true);
+					recyclerViewMessages.setLayoutManager(linearLayoutManager);
+					recyclerViewMessages.setAdapter(messageAdapter);
 				}
 			}
 
@@ -178,6 +187,6 @@ public class MessageActivity extends AppCompatActivity
 			{
 
 			}
-		})
+		});
 	}
 }

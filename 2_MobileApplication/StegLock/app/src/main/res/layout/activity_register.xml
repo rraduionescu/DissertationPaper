@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:layout_columnWeight="1"
                     android:layout_gravity="center"
                     android:contentDescription="@string/cdProfile"
-                    app:srcCompat="@drawable/ic_launcher_foreground" />
+                    app:srcCompat="@drawable/logo" />
 
                 <EditText
                     android:id="@+id/etProfile"

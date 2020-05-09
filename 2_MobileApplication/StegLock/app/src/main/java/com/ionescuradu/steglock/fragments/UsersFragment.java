@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.fragments;
 
 import android.os.Bundle;
 
@@ -18,15 +18,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.classes.User;
+import com.ionescuradu.steglock.adapters.UserAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//  Created by Ionescu Radu Stefan  //
+
 public class UsersFragment extends Fragment
 {
 	private RecyclerView recyclerView;
-	private UserAdapter userAdapter;
-	private List<User> users;
+	private UserAdapter  userAdapter;
+	private List<User>   users;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +52,7 @@ public class UsersFragment extends Fragment
 
 	private void readUsers()
 	{
-		FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+		FirebaseUser      firebaseUser      = FirebaseAuth.getInstance().getCurrentUser();
 		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
 		databaseReference.addValueEventListener(new ValueEventListener()
@@ -56,10 +61,10 @@ public class UsersFragment extends Fragment
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
 			{
 				users.clear();
-				for(DataSnapshot snapshot : dataSnapshot.getChildren())
+				for (DataSnapshot snapshot : dataSnapshot.getChildren())
 				{
 					User user = snapshot.getValue(User.class);
-					if(!user.getId().equals(firebaseUser.getUid()))
+					if (!user.getId().equals(firebaseUser.getUid()))
 					{
 						users.add(user);
 					}

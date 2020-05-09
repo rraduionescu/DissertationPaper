@@ -1,9 +1,11 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.WindowManager;
+
+import com.ionescuradu.steglock.R;
 
 //  Created by Ionescu Radu Stefan  //
 

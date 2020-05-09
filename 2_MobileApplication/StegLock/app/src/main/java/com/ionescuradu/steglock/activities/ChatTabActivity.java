@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,8 +11,13 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.ionescuradu.steglock.fragments.ChatsFragment;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.fragments.UsersFragment;
 
 import java.util.ArrayList;
+
+//  Created by Ionescu Radu Stefan  //
 
 public class ChatTabActivity extends AppCompatActivity
 {

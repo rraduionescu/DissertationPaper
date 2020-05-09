@@ -1,4 +1,4 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,14 +20,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.classes.User;
 
 //  Created by Ionescu Radu Stefan  //
 
 public class ProfileActivity extends AppCompatActivity
 {
 	private DatabaseReference databaseReference;
-	private FirebaseAuth firebaseAuth;
-	private FirebaseUser firebaseUser;
+	private FirebaseAuth      firebaseAuth;
+	private FirebaseUser      firebaseUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

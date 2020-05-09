@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by Ionescu Radu Stefan -->
+
 <resources>
     <color name="colorPrimary">#607D8B</color>
     <color name="colorPrimaryDark">#607D8B</color>

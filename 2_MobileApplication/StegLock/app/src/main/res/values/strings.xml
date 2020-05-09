@@ -10,14 +10,13 @@
     <string name="etFirstName">First Name</string>
     <string name="etLastName">Last Name</string>
     <string name="etNickname">Nickname</string>
-    <string name="etMessage">Type your message here...</string>
+    <string name="etMessage">Type your message here…</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
 
     <!-- TextView Strings -->
     <string name="tvDont">Don\'t have an account?</string>
     <string name="tvOr">OR</string>
     <string name="tvNickname">Nickname</string>
-    <string name="tvFullname">Full name</string>
     <string name="tvEmail">E-mail</string>
 
     <!-- Button Strings -->
@@ -59,11 +58,7 @@
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>
     <string name="facebook_app_id">607855729801442</string>
     <string name="fb_login_protocol_scheme">fb607855729801442</string>
-    <string name="title_activity_chat_tab">ChatTabActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

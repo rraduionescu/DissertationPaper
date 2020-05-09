@@ -1,7 +1,6 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -18,22 +17,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.classes.Message;
 
 import java.util.List;
 
+//  Created by Ionescu Radu Stefan  //
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>
 {
-	public static final int           MSG_TYPE_LEFT  = 0;
-	public static final int           MSG_TYPE_RIGHT = 1;
-	private             Context       context;
-	private             List<Message> messages;
-	private             String        img;
+	public static final int MSG_TYPE_LEFT  = 0;
+	public static final int MSG_TYPE_RIGHT = 1;
 
-	FirebaseUser firebaseUser;
+	private Context       context;
+	private List<Message> messages;
+	private FirebaseUser  firebaseUser;
 
-	public MessageAdapter(Context context, List<Message> messages, String img)
+	public MessageAdapter(Context context, List<Message> messages)
 	{
-		this.img = img;
 		this.context = context;
 		this.messages = messages;
 	}
@@ -42,14 +43,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	@Override
 	public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
-		if(viewType == MSG_TYPE_RIGHT)
+		if (viewType == MSG_TYPE_RIGHT)
 		{
 			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
 			return new MessageAdapter.ViewHolder(view);
 		}
 		else
 		{
-			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
 			return new MessageAdapter.ViewHolder(view);
 		}
 	}
@@ -61,10 +62,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 		holder.tvMessage.setText(message.getMessage());
 
-		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+		FirebaseUser     user      = FirebaseAuth.getInstance().getCurrentUser();
 		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 		StorageReference reference = null;
-		reference = storage.getReference().child("ProfilePictures/" + user.getUid());
+		reference = storage.getReference().child("ProfilePictures/" + message.getSender());
 		if (reference != null)
 		{
 			reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
@@ -77,17 +78,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				}
 			});
 		}
-
-		holder.itemView.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(context, MessageActivity.class);
-				intent.putExtra("userId", user.getId());
-				context.startActivity(intent);
-			}
-		});
 	}
 
 	@Override
@@ -114,7 +104,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	public int getItemViewType(int position)
 	{
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-		if(messages.get(position).getSender().equals(firebaseUser.getUid()))
+		if (messages.get(position).getSender().equals(firebaseUser.getUid()))
 		{
 			return MSG_TYPE_RIGHT;
 		}

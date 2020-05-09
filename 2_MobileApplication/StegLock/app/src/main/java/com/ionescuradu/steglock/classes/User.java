@@ -1,4 +1,6 @@
-package com.ionescuradu.steglock;
+package com.ionescuradu.steglock.classes;
+
+//  Created by Ionescu Radu Stefan  //
 
 public class User
 {

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by Ionescu Radu Stefan -->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
-    android:padding="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="40dp"
@@ -13,12 +16,12 @@
 
     <TextView
         android:id="@+id/tvChat"
-        android:layout_toRightOf="@id/profilePictureMessages"
-        android:layout_marginLeft="5dp"
-        android:text="hello"
-        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/profilePictureMessages"
+        android:layout_marginStart="5dp"
+        android:padding="8dp"
+        android:textSize="18sp"
         android:background="@drawable/background_left"/>
 
 </RelativeLayout>
