@@ -47,24 +47,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
 			return new MessageAdapter.ViewHolder(view);
 		}
-		View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
-		return new MessageAdapter.ViewHolder(view);
+		else
+		{
+			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+			return new MessageAdapter.ViewHolder(view);
+		}
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position)
 	{
+		Message message = messages.get(position);
 
+		holder.tvMessage.setText(message.getMessage());
 
-
-
-		User user = users.get(position);
-
-		holder.nickname.setText(user.getNickname());
-
+		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 		StorageReference reference = null;
-		reference = storage.getReference().child("ProfilePictures/" + user.getId());
+		reference = storage.getReference().child("ProfilePictures/" + user.getUid());
 		if (reference != null)
 		{
 			reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()

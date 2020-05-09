@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,6 +45,10 @@ public class MessageActivity extends AppCompatActivity
 	ImageButton       bSend;
 	EditText          etMessage;
 	Intent            intent;
+	MessageAdapter    messageAdapter;
+	List<Message>     messages;
+	RecyclerView      recyclerViewMessages;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -65,6 +73,12 @@ public class MessageActivity extends AppCompatActivity
 				finish();
 			}
 		});
+
+		recyclerViewMessages = findViewById(R.id.recyclerMessages);
+		recyclerViewMessages.setHasFixedSize(true);
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+		linearLayoutManager.setStackFromEnd(true);
+		recyclerViewMessages.setLayoutManager(linearLayoutManager);
 
 		intent = getIntent();
 		String userId = intent.getStringExtra("userId");
@@ -137,5 +151,33 @@ public class MessageActivity extends AppCompatActivity
 		hashmap.put("message", message);
 
 		reference.child("Chats").push().setValue(hashmap);
+	}
+
+	private void readMesage(String myId, String userId, String message, String img)
+	{
+		messages = new ArrayList<>();
+		databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
+		databaseReference.addValueEventListener(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+			{
+				messages.clear();
+				for(DataSnapshot snapshot : dataSnapshot.getChildren())
+				{
+					Message message1 = snapshot.getValue(Message.class);
+					if(message1.getReceiver().equals(myId) && message1.getSender().equals(userId) || message1.getReceiver().equals(userId) && message1.getSender().equals(myId))
+					{
+
+					}
+				}
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError)
+			{
+
+			}
+		})
 	}
 }
