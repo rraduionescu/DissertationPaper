@@ -10,6 +10,7 @@
     <string name="etFirstName">First Name</string>
     <string name="etLastName">Last Name</string>
     <string name="etNickname">Nickname</string>
+    <string name="etMessage">Type your message here...</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
 
     <!-- TextView Strings -->
@@ -43,6 +44,7 @@
     <string name="psError" tools:ignore="TypographyDashes">Password must be 10-15 characters long containing at least one lowercase character, one uppercase character, one digit and one special character( @, #, $, % )!</string>
     <string name="cpsError">Password and Password confirmation must be identical!</string>
     <string name="ppError">Profile picture must have at least almost square ratio!</string>
+    <string name="msgError">You can\'t send an empty message</string>
 
     <!-- ContentDescriptor Strings -->
     <string name="cdProfile">Profile picture</string>

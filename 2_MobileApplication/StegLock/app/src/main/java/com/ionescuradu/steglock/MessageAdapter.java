@@ -14,33 +14,50 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>
 {
-	private Context    context;
-	private List<User> users;
+	public static final int           MSG_TYPE_LEFT  = 0;
+	public static final int           MSG_TYPE_RIGHT = 1;
+	private             Context       context;
+	private             List<Message> messages;
+	private             String        img;
 
-	public UserAdapter(Context context, List<User> users)
+	FirebaseUser firebaseUser;
+
+	public MessageAdapter(Context context, List<Message> messages, String img)
 	{
+		this.img = img;
 		this.context = context;
-		this.users = users;
+		this.messages = messages;
 	}
 
 	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+	public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
+		if(viewType == MSG_TYPE_RIGHT)
+		{
+			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+			return new MessageAdapter.ViewHolder(view);
+		}
 		View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
-		return new UserAdapter.ViewHolder(view);
+		return new MessageAdapter.ViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+	public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position)
 	{
+
+
+
+
 		User user = users.get(position);
 
 		holder.nickname.setText(user.getNickname());
@@ -76,20 +93,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>
 	@Override
 	public int getItemCount()
 	{
-		return users.size();
+		return messages.size();
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder
 	{
-		public TextView  nickname;
+		public TextView  tvMessage;
 		public ImageView profilePicture;
 
 		public ViewHolder(View view)
 		{
 			super(view);
 
-			nickname = view.findViewById(R.id.nicknameChat);
-			profilePicture = view.findViewById(R.id.profilePicture);
+			tvMessage = view.findViewById(R.id.tvChat);
+			profilePicture = view.findViewById(R.id.profilePictureMessages);
+		}
+	}
+
+	@Override
+	public int getItemViewType(int position)
+	{
+		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+		if(messages.get(position).getSender().equals(firebaseUser.getUid()))
+		{
+			return MSG_TYPE_RIGHT;
+		}
+		else
+		{
+			return MSG_TYPE_LEFT;
 		}
 	}
 }
