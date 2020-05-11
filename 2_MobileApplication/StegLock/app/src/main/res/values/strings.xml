@@ -12,6 +12,7 @@
     <string name="etNickname">Nickname</string>
     <string name="etMessage">Type your message here…</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
+    <string name="etSearch">Search...</string>
 
     <!-- TextView Strings -->
     <string name="tvDont">Don\'t have an account?</string>

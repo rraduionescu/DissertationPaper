@@ -44,6 +44,7 @@ public class ChatTabActivity extends AppCompatActivity
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setTitle("Steglock Chat");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		toolbar.setNavigationIcon(R.drawable.ic_action_name2);
 		toolbar.setNavigationOnClickListener(new View.OnClickListener()
 		{
 			@Override
