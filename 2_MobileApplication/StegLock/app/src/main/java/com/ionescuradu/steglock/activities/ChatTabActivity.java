@@ -3,12 +3,19 @@ package com.ionescuradu.steglock.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.ionescuradu.steglock.fragments.ChatsFragment;
@@ -27,6 +34,25 @@ public class ChatTabActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_tab);
+
+		Window window = this.getWindow();
+		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
+		Toolbar toolbar = findViewById(R.id.chatTabToolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setTitle("Steglock Chat");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		toolbar.setNavigationOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		TabLayout tabLayout = findViewById(R.id.tabLayout);
 		ViewPager viewPager = findViewById(R.id.viewPager);

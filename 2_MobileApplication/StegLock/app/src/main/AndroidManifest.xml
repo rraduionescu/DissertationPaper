@@ -6,6 +6,8 @@
     package="com.ionescuradu.steglock">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -41,7 +43,8 @@
 
         <activity
             android:name=".activities.ChatTabActivity"
-            android:label="StegLock Chat"/>
+            android:label="StegLock Chat"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
         <activity
             android:name=".activities.MessageActivity"
