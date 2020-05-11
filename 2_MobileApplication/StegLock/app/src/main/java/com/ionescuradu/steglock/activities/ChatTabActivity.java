@@ -41,11 +41,12 @@ public class ChatTabActivity extends AppCompatActivity
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
-	class ViewPagerAdapter extends FragmentPagerAdapter
+	static class ViewPagerAdapter extends FragmentPagerAdapter
 	{
 		private ArrayList<Fragment> fragments;
 		private ArrayList<String>   titles;
 
+		@SuppressWarnings("deprecation")
 		ViewPagerAdapter(FragmentManager fm)
 		{
 			super(fm);

@@ -279,6 +279,7 @@ public class MainActivity extends Activity
 							p.putBytes(data);
 						}
 					});
+					assert user != null;
 					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
 					HashMap<String, String> details = new HashMap<>();
 					details.put("id", user.getUid());
@@ -336,6 +337,7 @@ public class MainActivity extends Activity
 							p.putBytes(data);
 						}
 					});
+					assert user != null;
 					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
 					HashMap<String, String> details = new HashMap<>();
 					details.put("id", user.getUid());
@@ -367,7 +369,7 @@ public class MainActivity extends Activity
 		if (user != null)
 		{
 			Toast.makeText(MainActivity.this, getResources().getString(R.string.tLogSuccess) + " " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-			Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+			Intent intent = new Intent(MainActivity.this, ChatTabActivity.class);
 			startActivity(intent);
 		}
 	}

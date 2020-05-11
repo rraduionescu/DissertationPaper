@@ -46,12 +46,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		if (viewType == MSG_TYPE_RIGHT)
 		{
 			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
-			return new MessageAdapter.ViewHolder(view);
+			return new ViewHolder(view);
 		}
 		else
 		{
 			View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
-			return new MessageAdapter.ViewHolder(view);
+			return new ViewHolder(view);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		return messages.size();
 	}
 
-	public class ViewHolder extends RecyclerView.ViewHolder
+	public static class ViewHolder extends RecyclerView.ViewHolder
 	{
 		public TextView  tvMessage;
 		public ImageView profilePicture;

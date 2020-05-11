@@ -40,7 +40,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
 		View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
-		return new UserAdapter.ViewHolder(view);
+		return new ViewHolder(view);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>
 		return users.size();
 	}
 
-	public class ViewHolder extends RecyclerView.ViewHolder
+	public static class ViewHolder extends RecyclerView.ViewHolder
 	{
 		public TextView  nickname;
 		public ImageView profilePicture;
