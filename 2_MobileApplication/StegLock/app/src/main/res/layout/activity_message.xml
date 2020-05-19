@@ -72,7 +72,27 @@
             android:layout_height="40dp"
             android:background="@color/background"
             android:foreground="@drawable/ic_action_name"
+            android:layout_toStartOf="@+id/bSendImage"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bSendImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/background"
+            android:foreground="@drawable/ic_action_name2"
+            android:layout_toStartOf="@+id/bSendRecording"
+            android:layout_marginStart="10dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bSendRecording"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@color/background"
+            android:foreground="@drawable/ic_action_name3"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
             />
 
     </RelativeLayout>

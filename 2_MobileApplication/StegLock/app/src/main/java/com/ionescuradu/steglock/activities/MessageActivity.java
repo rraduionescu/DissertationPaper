@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -49,6 +51,8 @@ public class MessageActivity extends AppCompatActivity
 	FirebaseUser      firebaseUser;
 	DatabaseReference databaseReference;
 	ImageButton       bSend;
+	ImageButton       bSendImage;
+	ImageButton       bSendRecording;
 	EditText          etMessage;
 	Intent            intent;
 	MessageAdapter    messageAdapter;
@@ -85,6 +89,8 @@ public class MessageActivity extends AppCompatActivity
 		profilePicture = findViewById(R.id.profilePictureChat);
 		nickname = findViewById(R.id.nicknameChat);
 		bSend = findViewById(R.id.bSend);
+		bSendImage = findViewById(R.id.bSendImage);
+		bSendRecording = findViewById(R.id.bSendRecording);
 		etMessage = findViewById(R.id.etMessage);
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 		databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
@@ -105,6 +111,16 @@ public class MessageActivity extends AppCompatActivity
 					Toast.makeText(MessageActivity.this, R.string.msgError, Toast.LENGTH_SHORT).show();
 				}
 				etMessage.setText("");
+			}
+		});
+
+		bSendImage.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(i, 2);
 			}
 		});
 
@@ -142,6 +158,40 @@ public class MessageActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		Bitmap bmpImg;
+		if (requestCode == 2 && resultCode == RESULT_OK)
+		{
+			Uri img = data.getData();
+			try
+			{
+				bmpImg = MediaStore.Images.Media.getBitmap(getContentResolver(), img);
+				int   h     = bmpImg.getHeight();
+				int   w     = bmpImg.getWidth();
+				float ratio = (float) h / w;
+				if (ratio < 0.8 || ratio > 1.2)
+				{
+					((EditText) findViewById(R.id.etProfile)).setError(getResources().getString(R.string.ppError));
+					findViewById(R.id.etProfile).requestFocus();
+				}
+				else
+				{
+					//ivProfile.setImageBitmap(Bitmap.createScaledBitmap(bmpImg, 100, 100, false));
+					//etR.setError(null);
+					//etL.setError(null);
+					//etR.clearFocus();
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void sendMessage(String sender, String receiver, String message)
