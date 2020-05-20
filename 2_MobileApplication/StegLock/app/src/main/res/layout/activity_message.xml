@@ -90,7 +90,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@color/background"
-            android:foreground="@drawable/ic_action_name3"
+            android:foreground="@drawable/ic_action_name5"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             />

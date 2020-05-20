@@ -36,6 +36,8 @@ import com.ionescuradu.steglock.adapters.MessageAdapter;
 import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.classes.User;
 
+import java.io.ByteArrayOutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,6 +126,16 @@ public class MessageActivity extends AppCompatActivity
 			}
 		});
 
+		bSendRecording.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(i, 3);
+			}
+		});
+
 		databaseReference.addValueEventListener(new ValueEventListener()
 		{
 			@Override
@@ -170,22 +182,40 @@ public class MessageActivity extends AppCompatActivity
 			Uri img = data.getData();
 			try
 			{
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				bmpImg = MediaStore.Images.Media.getBitmap(getContentResolver(), img);
-				int   h     = bmpImg.getHeight();
-				int   w     = bmpImg.getWidth();
-				float ratio = (float) h / w;
-				if (ratio < 0.8 || ratio > 1.2)
-				{
-					((EditText) findViewById(R.id.etProfile)).setError(getResources().getString(R.string.ppError));
-					findViewById(R.id.etProfile).requestFocus();
-				}
-				else
-				{
-					//ivProfile.setImageBitmap(Bitmap.createScaledBitmap(bmpImg, 100, 100, false));
-					//etR.setError(null);
-					//etL.setError(null);
-					//etR.clearFocus();
-				}
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				bmpImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
+				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
+				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
+				sentImages.putBytes(bmpData);
+
+				String userId  = intent.getStringExtra("userId");
+				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
+				sendMessage(firebaseUser.getUid(), userId, message);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else if (requestCode==3 && resultCode == RESULT_OK)
+		{
+			try
+			{
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				bmpImg = (Bitmap) data.getExtras().get("data");
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+				bmpImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
+				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
+				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
+				sentImages.putBytes(bmpData);
+
+				String userId  = intent.getStringExtra("userId");
+				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
+				sendMessage(firebaseUser.getUid(), userId, message);
 			}
 			catch (Exception e)
 			{

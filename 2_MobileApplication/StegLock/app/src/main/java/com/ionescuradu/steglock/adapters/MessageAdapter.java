@@ -26,12 +26,11 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>
 {
-	public static final int MSG_TYPE_LEFT  = 0;
-	public static final int MSG_TYPE_RIGHT = 1;
+	private static final int MSG_TYPE_LEFT  = 0;
+	private static final int MSG_TYPE_RIGHT = 1;
 
 	private Context       context;
 	private List<Message> messages;
-	private FirebaseUser  firebaseUser;
 
 	public MessageAdapter(Context context, List<Message> messages)
 	{
@@ -60,24 +59,56 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	{
 		Message message = messages.get(position);
 
-		holder.tvMessage.setText(message.getMessage());
-
-		FirebaseUser     user      = FirebaseAuth.getInstance().getCurrentUser();
-		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
-		StorageReference reference = null;
-		reference = storage.getReference().child("ProfilePictures/" + message.getSender());
-		if (reference != null)
+		if (message.getMessage().length() > 35)
 		{
-			reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+			if (message.getMessage().substring(0, 5).compareToIgnoreCase("SentI") == 0)
 			{
-				@Override
-				public void onSuccess(byte[] bytes)
+				holder.tvMessage.setVisibility(View.GONE);
+				holder.ivChat.setVisibility(View.VISIBLE);
+				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
+				StorageReference reference = storage.getReference().child(message.getMessage());
+				reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
-					Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-					holder.profilePicture.setImageBitmap(bitmap);
-				}
-			});
+					@Override
+					public void onSuccess(byte[] bytes)
+					{
+						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+						holder.ivChat.setImageBitmap(bitmap);
+					}
+				});
+			}
+			else if (message.getMessage().substring(0, 14).compareTo("SentRecordings/") == 0)
+			{
+				holder.tvMessage.setText("");
+			}
 		}
+		else if (message.getMessage().length() > 4 && message.getMessage().length() < 35)
+		{
+			if (message.getMessage().substring(0, 4).compareTo("Sent") != 0)
+			{
+				holder.tvMessage.setVisibility(View.VISIBLE);
+				holder.ivChat.setVisibility(View.GONE);
+				holder.tvMessage.setText(message.getMessage());
+			}
+		}
+		else
+		{
+			holder.tvMessage.setVisibility(View.VISIBLE);
+			holder.ivChat.setVisibility(View.GONE);
+			holder.tvMessage.setText(message.getMessage());
+		}
+
+		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
+		StorageReference reference = storage.getReference().child("ProfilePictures/" + message.getSender());
+		reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+		{
+			@Override
+			public void onSuccess(byte[] bytes)
+			{
+				Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+				holder.profilePicture.setImageBitmap(bitmap);
+			}
+		});
 	}
 
 	@Override
@@ -86,16 +117,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		return messages.size();
 	}
 
-	public static class ViewHolder extends RecyclerView.ViewHolder
+	static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		public TextView  tvMessage;
-		public ImageView profilePicture;
+		TextView  tvMessage;
+		ImageView ivChat;
+		ImageView profilePicture;
 
-		public ViewHolder(View view)
+		ViewHolder(View view)
 		{
 			super(view);
 
 			tvMessage = view.findViewById(R.id.tvChat);
+			ivChat = view.findViewById(R.id.ivChat);
 			profilePicture = view.findViewById(R.id.profilePictureMessages);
 		}
 	}
@@ -103,7 +136,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	@Override
 	public int getItemViewType(int position)
 	{
-		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+		FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+		assert firebaseUser != null;
 		if (messages.get(position).getSender().equals(firebaseUser.getUid()))
 		{
 			return MSG_TYPE_RIGHT;
