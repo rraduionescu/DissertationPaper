@@ -54,6 +54,7 @@ public class MessageActivity extends AppCompatActivity
 	DatabaseReference databaseReference;
 	ImageButton       bSend;
 	ImageButton       bSendImage;
+	ImageButton       bSendPhoto;
 	ImageButton       bSendRecording;
 	EditText          etMessage;
 	Intent            intent;
@@ -92,6 +93,7 @@ public class MessageActivity extends AppCompatActivity
 		nickname = findViewById(R.id.nicknameChat);
 		bSend = findViewById(R.id.bSend);
 		bSendImage = findViewById(R.id.bSendImage);
+		bSendPhoto = findViewById(R.id.bSendPhoto);
 		bSendRecording = findViewById(R.id.bSendRecording);
 		etMessage = findViewById(R.id.etMessage);
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -126,7 +128,7 @@ public class MessageActivity extends AppCompatActivity
 			}
 		});
 
-		bSendRecording.setOnClickListener(new View.OnClickListener()
+		bSendPhoto.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -200,7 +202,7 @@ public class MessageActivity extends AppCompatActivity
 				e.printStackTrace();
 			}
 		}
-		else if (requestCode==3 && resultCode == RESULT_OK)
+		else if (requestCode == 3 && resultCode == RESULT_OK)
 		{
 			try
 			{
