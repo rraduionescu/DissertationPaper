@@ -138,6 +138,18 @@ public class MessageActivity extends AppCompatActivity
 			}
 		});
 
+		bSendRecording.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getApplicationContext(), AudioRecordTest.class);
+				startActivity(intent);
+				//Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+				//startActivityForResult(i, 4);
+			}
+		});
+
 		databaseReference.addValueEventListener(new ValueEventListener()
 		{
 			@Override
