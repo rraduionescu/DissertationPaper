@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -61,6 +62,7 @@ public class MessageActivity extends AppCompatActivity
 	MessageAdapter    messageAdapter;
 	List<Message>     messages;
 	RecyclerView      recyclerViewMessages;
+	String            userId;
 
 
 	@Override
@@ -88,7 +90,7 @@ public class MessageActivity extends AppCompatActivity
 		});
 
 		intent = getIntent();
-		String userId = intent.getStringExtra("userId");
+		userId = intent.getStringExtra("userId");
 		profilePicture = findViewById(R.id.profilePictureChat);
 		nickname = findViewById(R.id.nicknameChat);
 		bSend = findViewById(R.id.bSend);
@@ -145,8 +147,6 @@ public class MessageActivity extends AppCompatActivity
 			{
 				Intent intent = new Intent(getApplicationContext(), AudioRecordTest.class);
 				startActivity(intent);
-				//Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-				//startActivityForResult(i, 4);
 			}
 		});
 
@@ -190,24 +190,35 @@ public class MessageActivity extends AppCompatActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		Bitmap bmpImg;
+		Bitmap bitmapImage;
 		if (requestCode == 2 && resultCode == RESULT_OK)
 		{
-			Uri img = data.getData();
+			Uri image = data.getData();
 			try
 			{
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				bmpImg = MediaStore.Images.Media.getBitmap(getContentResolver(), img);
+				Timestamp        timestamp        = new Timestamp(System.currentTimeMillis());
+				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				bmpImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
+				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+				byte[] bitmapData = byteArrayOutputStream.toByteArray();
+
+				Log.e("IMAGE PATH", "SentImages/" + firebaseUser.getUid() + timestamp);
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				sentImages.putBytes(bmpData);
+				sentImages.putBytes(bitmapData);
 
-				String userId  = intent.getStringExtra("userId");
-				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
-				sendMessage(firebaseUser.getUid(), userId, message);
+				Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+				intent.putExtra("userId", userId);
+				intent.putExtra("timestamp", timestamp.toString());
+				startActivity(intent);
+
+				//StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
+				//StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
+				//sentImages.putBytes(bitmapData);
+
+				//String userId  = intent.getStringExtra("userId");
+				//String message = "SentImages/" + firebaseUser.getUid() + timestamp;
+				//sendMessage(firebaseUser.getUid(), userId, message);
 			}
 			catch (Exception e)
 			{
@@ -219,9 +230,9 @@ public class MessageActivity extends AppCompatActivity
 			try
 			{
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				bmpImg = (Bitmap) data.getExtras().get("data");
+				bitmapImage = (Bitmap) data.getExtras().get("data");
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				bmpImg.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);

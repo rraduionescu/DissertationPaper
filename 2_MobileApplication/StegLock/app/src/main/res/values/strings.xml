@@ -13,12 +13,14 @@
     <string name="etMessage">Type your message here…</string>
     <string name="etPasswordConfirmation">Password confirmation</string>
     <string name="etSearch">Search...</string>
+    <string name="etSecretMessage">Input your secret message</string>
 
     <!-- TextView Strings -->
     <string name="tvDont">Don\'t have an account?</string>
     <string name="tvOr">OR</string>
     <string name="tvNickname">Nickname</string>
     <string name="tvEmail">E-mail</string>
+    <string name="tvSecretMessage">Secret message</string>
 
     <!-- Button Strings -->
     <string name="bLogin">Log in</string>
@@ -29,6 +31,7 @@
     <string name="bProfile">My profile</string>
     <string name="bAbout">About StegLock</string>
     <string name="bChat">Chat</string>
+    <string name="bSend">Send</string>
 
     <!-- Toast Strings -->
     <string name="tLogSuccess">Logged in as </string>
@@ -59,7 +62,5 @@
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>
     <string name="facebook_app_id">607855729801442</string>
     <string name="fb_login_protocol_scheme">fb607855729801442</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
