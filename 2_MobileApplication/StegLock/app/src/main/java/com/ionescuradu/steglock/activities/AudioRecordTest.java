@@ -75,6 +75,23 @@ public class AudioRecordTest extends AppCompatActivity
 		}
 	}
 
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		if (recorder != null)
+		{
+			recorder.release();
+			recorder = null;
+		}
+
+		if (player != null)
+		{
+			player.release();
+			player = null;
+		}
+	}
+
 	private void startPlaying()
 	{
 		player = new MediaPlayer();
@@ -206,22 +223,5 @@ public class AudioRecordTest extends AppCompatActivity
 						   ViewGroup.LayoutParams.WRAP_CONTENT,
 						   0));
 		setContentView(ll);
-	}
-
-	@Override
-	public void onStop()
-	{
-		super.onStop();
-		if (recorder != null)
-		{
-			recorder.release();
-			recorder = null;
-		}
-
-		if (player != null)
-		{
-			player.release();
-			player = null;
-		}
 	}
 }

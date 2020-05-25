@@ -20,7 +20,9 @@
     <string name="tvOr">OR</string>
     <string name="tvNickname">Nickname</string>
     <string name="tvEmail">E-mail</string>
-    <string name="tvSecretMessage">Secret message</string>
+    <string name="tvSecretMessage">Secret Message</string>
+    <string name="tvCoverImage">Cover Image</string>
+    <string name="tvCoverRecording">Cover Recording</string>
 
     <!-- Button Strings -->
     <string name="bLogin">Log in</string>
@@ -30,6 +32,10 @@
     <string name="bLogout">Log out</string>
     <string name="bProfile">My profile</string>
     <string name="bAbout">About StegLock</string>
+    <string name="bStartRecord">Start recording</string>
+    <string name="bStopRecord">Stop recording</string>
+    <string name="bStartPlay">Start playing</string>
+    <string name="bStopPlay">Stop playing</string>
     <string name="bChat">Chat</string>
     <string name="bSend">Send</string>
 
@@ -47,6 +53,7 @@
     <string name="psError" tools:ignore="TypographyDashes">Password must be 10-15 characters long containing at least one lowercase character, one uppercase character, one digit and one special character( @, #, $, % )!</string>
     <string name="cpsError">Password and Password confirmation must be identical!</string>
     <string name="ppError">Profile picture must have at least almost square ratio!</string>
+    <string name="nnError">Nickname can contain upper/lower characters, numbers and . or _ special characters!</string>
     <string name="msgError">You can\'t send an empty message</string>
 
     <!-- ContentDescriptor Strings -->

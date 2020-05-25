@@ -145,7 +145,10 @@ public class MessageActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getApplicationContext(), AudioRecordTest.class);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Intent intent = new Intent(getApplicationContext(), StegoRecordingActivity.class);
+				intent.putExtra("userId", userId);
+				intent.putExtra("timestamp", timestamp.toString());
 				startActivity(intent);
 			}
 		});
@@ -196,13 +199,12 @@ public class MessageActivity extends AppCompatActivity
 			Uri image = data.getData();
 			try
 			{
-				Timestamp        timestamp        = new Timestamp(System.currentTimeMillis());
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 				byte[] bitmapData = byteArrayOutputStream.toByteArray();
 
-				Log.e("IMAGE PATH", "SentImages/" + firebaseUser.getUid() + timestamp);
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
 				sentImages.putBytes(bitmapData);
@@ -211,14 +213,6 @@ public class MessageActivity extends AppCompatActivity
 				intent.putExtra("userId", userId);
 				intent.putExtra("timestamp", timestamp.toString());
 				startActivity(intent);
-
-				//StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
-				//StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				//sentImages.putBytes(bitmapData);
-
-				//String userId  = intent.getStringExtra("userId");
-				//String message = "SentImages/" + firebaseUser.getUid() + timestamp;
-				//sendMessage(firebaseUser.getUid(), userId, message);
 			}
 			catch (Exception e)
 			{
@@ -234,13 +228,15 @@ public class MessageActivity extends AppCompatActivity
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
+
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
 				sentImages.putBytes(bmpData);
 
-				String userId  = intent.getStringExtra("userId");
-				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
-				sendMessage(firebaseUser.getUid(), userId, message);
+				Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+				intent.putExtra("userId", userId);
+				intent.putExtra("timestamp", timestamp.toString());
+				startActivity(intent);
 			}
 			catch (Exception e)
 			{

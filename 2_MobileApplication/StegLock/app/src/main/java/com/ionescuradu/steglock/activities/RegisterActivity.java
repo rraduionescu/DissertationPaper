@@ -90,11 +90,11 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Pattern.compile("[a-z]{1,15}?");
+				Pattern p = Pattern.compile("[a-z0-9._]{1,15}?");
 				Matcher m = p.matcher(text);
 				if (!m.matches())
 				{
-					textView.setError(getResources().getString(R.string.fnError));
+					textView.setError(getResources().getString(R.string.nnError));
 				}
 			}
 		});
@@ -197,15 +197,15 @@ public class RegisterActivity extends AppCompatActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		Bitmap bmpImg;
+		Bitmap bitmapImage;
 		if (requestCode == 2 && resultCode == RESULT_OK)
 		{
-			Uri img = data.getData();
+			Uri image = data.getData();
 			try
 			{
-				bmpImg = MediaStore.Images.Media.getBitmap(getContentResolver(), img);
-				int   h     = bmpImg.getHeight();
-				int   w     = bmpImg.getWidth();
+				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
+				int   h     = bitmapImage.getHeight();
+				int   w     = bitmapImage.getWidth();
 				float ratio = (float) h / w;
 				if (ratio < 0.8 || ratio > 1.2)
 				{
@@ -214,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity
 				}
 				else
 				{
-					ivProfile.setImageBitmap(Bitmap.createScaledBitmap(bmpImg, 100, 100, false));
+					ivProfile.setImageBitmap(bitmapImage);
 					etR.setError(null);
 					etL.setError(null);
 					etR.clearFocus();

@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<!-- Created by Ionescu Radu Stefan -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".activities.StegoRecordingActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvCoverImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/tvCoverRecording"
+        android:textAlignment="center" />
+
+    <LinearLayout
+        android:id="@+id/llRecord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+
+    <TextView
+        android:id="@+id/tvSecretMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tvSecretMessage"
+        android:textAlignment="center"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/etSecretMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/etSecretMessage"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorAccent"
+        android:textColorHighlight="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+
+    <Button
+        android:id="@+id/bSendStegoRecording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bSend"
+        android:layout_margin="8dp"
+        android:background="@drawable/bshape"/>
+
+</LinearLayout>

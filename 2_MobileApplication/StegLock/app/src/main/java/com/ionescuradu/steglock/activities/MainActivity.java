@@ -212,23 +212,6 @@ public class MainActivity extends Activity
 		}
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-
-		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-		{
-			bFacebook.setPadding(5000, 0, 0, 0);
-			bGoogle.setPadding(4950, 0, 0, 0);
-		}
-		else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
-		{
-			bFacebook.setPadding(295, 0, 0, 0);
-			bGoogle.setPadding(290, 0, 0, 0);
-		}
-	}
-
 	private void loginWithEmail(String email, String password)
 	{
 		firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>()

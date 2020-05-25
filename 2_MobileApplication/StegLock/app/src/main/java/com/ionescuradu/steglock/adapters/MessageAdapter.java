@@ -82,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.tvMessage.setText("");
 			}
 		}
-		else if (message.getMessage().length() > 4 && message.getMessage().length() < 35)
+		else if (message.getMessage().length() > 4 && message.getMessage().length() < 80)
 		{
 			if (message.getMessage().substring(0, 4).compareTo("Sent") != 0)
 			{

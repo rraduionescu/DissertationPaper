@@ -24,16 +24,19 @@ import com.ionescuradu.steglock.R;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+//  Created by Ionescu Radu Stefan  //
+
 public class StegoImageActivity extends AppCompatActivity
 {
-	FirebaseUser firebaseUser;
-	ImageView    ivCoverImage;
-	EditText     etSecretMessage;
-	Button       bSendStegoImage;
-	Intent       intent;
-	String       timestamp;
-	String       secretMessage;
-	String       userId;
+	private FirebaseUser firebaseUser;
+	private ImageView    ivCoverImage;
+	private EditText     etSecretMessage;
+	private Button       bSendStegoImage;
+	private Intent       intent;
+	private String       timestamp;
+	private String       secretMessage;
+	private String       userId;
+	private Bitmap       bitmapImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -58,7 +61,6 @@ public class StegoImageActivity extends AppCompatActivity
 		userId = intent.getStringExtra("userId");
 		secretMessage = etSecretMessage.getText().toString();
 
-		Log.e("IMAGE PATH", "SentImages/" + firebaseUser.getUid() + timestamp);
 		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 		StorageReference reference = storage.getReference().child("SentImages/" + firebaseUser.getUid() + timestamp);
 		reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
@@ -66,8 +68,8 @@ public class StegoImageActivity extends AppCompatActivity
 			@Override
 			public void onSuccess(byte[] bytes)
 			{
-				Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-				ivCoverImage.setImageBitmap(bitmap);
+				bitmapImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+				ivCoverImage.setImageBitmap(bitmapImage);
 			}
 		});
 
@@ -78,7 +80,7 @@ public class StegoImageActivity extends AppCompatActivity
 			{
 				// TO-DO : Steganographic process
 				// Encrypt secretMessage String
-				// Embed secretMessage cipher into bitmapData
+				// Embed secretMessage cipher into bitmapImage
 
 				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
 				sendMessage(firebaseUser.getUid(), userId, message);
