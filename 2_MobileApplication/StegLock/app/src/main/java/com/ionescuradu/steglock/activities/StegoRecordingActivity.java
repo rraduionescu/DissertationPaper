@@ -21,8 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -65,7 +70,29 @@ public class StegoRecordingActivity extends AppCompatActivity
 			{
 				// TO-DO : Steganographic process
 				// Encrypt secretMessage String
-				// Embed secretMessage cipher into bitmapImage
+				// Embed secretMessage cipher into recording file
+
+				try
+				{
+					StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
+					StorageReference sentRecordings       = storageReference.child("SentRecordings/" + firebaseUser.getUid() + timestamp);
+
+					FileInputStream       fis              = new FileInputStream(new File(fileName));
+					ByteArrayOutputStream bos              = new ByteArrayOutputStream();
+					byte[]                b                = new byte[2048];
+
+					for (int readNum; (readNum = fis.read(b)) != -1; )
+					{
+						bos.write(b, 0, readNum);
+					}
+
+					byte[] bytes = bos.toByteArray();
+					sentRecordings.putBytes(bytes);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 
 				String message = "SentRecordings/" + firebaseUser.getUid() + timestamp;
 				sendMessage(firebaseUser.getUid(), userId, message);

@@ -227,11 +227,11 @@ public class MessageActivity extends AppCompatActivity
 				bitmapImage = (Bitmap) data.getExtras().get("data");
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-				byte[]           bmpData          = byteArrayOutputStream.toByteArray();
+				byte[]           bitmapData          = byteArrayOutputStream.toByteArray();
 
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				sentImages.putBytes(bmpData);
+				sentImages.putBytes(bitmapData);
 
 				Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
 				intent.putExtra("userId", userId);

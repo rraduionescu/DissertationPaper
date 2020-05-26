@@ -81,6 +81,7 @@ public class StegoImageActivity extends AppCompatActivity
 				// TO-DO : Steganographic process
 				// Encrypt secretMessage String
 				// Embed secretMessage cipher into bitmapImage
+				// Delete original image, upload stego image
 
 				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
 				sendMessage(firebaseUser.getUid(), userId, message);

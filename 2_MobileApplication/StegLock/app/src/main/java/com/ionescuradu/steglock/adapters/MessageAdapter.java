@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -77,9 +79,26 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 					}
 				});
 			}
-			else if (message.getMessage().substring(0, 14).compareTo("SentRecordings/") == 0)
+			else if (message.getMessage().substring(0, 5).compareTo("SentR") == 0)
 			{
-				holder.tvMessage.setText("");
+				holder.tvMessage.setVisibility(View.GONE);
+				holder.ivChat.setVisibility(View.VISIBLE);
+				RelativeLayout.LayoutParams ivParams = (RelativeLayout.LayoutParams) holder.ivChat.getLayoutParams();
+				ivParams.width = 150;
+				ivParams.height = 150;
+				holder.ivChat.setLayoutParams(ivParams);
+				holder.ivChat.setImageDrawable(context.getDrawable(R.drawable.ic_play));
+				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
+				StorageReference reference = storage.getReference().child(message.getMessage());
+				reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				{
+					@Override
+					public void onSuccess(byte[] bytes)
+					{
+						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+						holder.ivChat.setImageBitmap(bitmap);
+					}
+				});
 			}
 		}
 		else if (message.getMessage().length() > 4 && message.getMessage().length() < 80)
