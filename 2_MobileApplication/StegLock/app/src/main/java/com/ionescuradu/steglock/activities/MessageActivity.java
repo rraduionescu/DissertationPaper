@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -38,8 +40,12 @@ import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.classes.User;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,6 +69,7 @@ public class MessageActivity extends AppCompatActivity
 	List<Message>     messages;
 	RecyclerView      recyclerViewMessages;
 	String            userId;
+	String            currentPhotoPath;
 
 
 	@Override
@@ -125,8 +132,8 @@ public class MessageActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(i, 2);
+				Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(intent, 2);
 			}
 		});
 
@@ -135,8 +142,24 @@ public class MessageActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(i, 3);
+				Intent intent    = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				File   photoFile = null;
+				try
+				{
+					photoFile = createImageFile();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				if (photoFile != null)
+				{
+					Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+															  "com.example.android.fileprovider",
+															  photoFile);
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+					startActivityForResult(intent, 3);
+				}
 			}
 		});
 
@@ -221,10 +244,12 @@ public class MessageActivity extends AppCompatActivity
 		}
 		else if (requestCode == 3 && resultCode == RESULT_OK)
 		{
+			File file  = new File(currentPhotoPath);
+			Uri  image = Uri.fromFile(file);
 			try
 			{
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				bitmapImage = (Bitmap) data.getExtras().get("data");
+				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 				byte[] bitmapData = byteArrayOutputStream.toByteArray();
@@ -289,5 +314,20 @@ public class MessageActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	private File createImageFile() throws IOException
+	{
+		String timeStamp     = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = "JPEG_" + timeStamp + "_";
+		File   storageDir    = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File image = File.createTempFile(
+				imageFileName,  /* prefix */
+				".png",         /* suffix */
+				storageDir      /* directory */
+										);
+
+		currentPhotoPath = image.getAbsolutePath();
+		return image;
 	}
 }
