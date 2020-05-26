@@ -63,7 +63,7 @@ public class StegoImageActivity extends AppCompatActivity
 
 		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 		StorageReference reference = storage.getReference().child("SentImages/" + firebaseUser.getUid() + timestamp);
-		reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+		reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
 		{
 			@Override
 			public void onSuccess(byte[] bytes)

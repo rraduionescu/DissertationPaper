@@ -3,6 +3,8 @@ package com.ionescuradu.steglock.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,10 @@ import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.classes.Message;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 //  Created by Ionescu Radu Stefan  //
@@ -69,7 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setVisibility(View.VISIBLE);
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@Override
 					public void onSuccess(byte[] bytes)
@@ -81,6 +87,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 			}
 			else if (message.getMessage().substring(0, 5).compareTo("SentR") == 0)
 			{
+				final String fileName = context.getExternalCacheDir().getAbsolutePath() + "/" + message.toString();
 				holder.tvMessage.setVisibility(View.GONE);
 				holder.ivChat.setVisibility(View.VISIBLE);
 				RelativeLayout.LayoutParams ivParams = (RelativeLayout.LayoutParams) holder.ivChat.getLayoutParams();
@@ -90,13 +97,40 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setImageDrawable(context.getDrawable(R.drawable.ic_play));
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@Override
 					public void onSuccess(byte[] bytes)
 					{
-						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-						holder.ivChat.setImageBitmap(bitmap);
+						try
+						{
+							//ByteArrayInputStream inputStream  = new ByteArrayInputStream(bytes);
+							FileOutputStream outputStream = new FileOutputStream(new File(fileName));
+							outputStream.write(bytes);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+				holder.ivChat.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						MediaPlayer player = new MediaPlayer();
+						try
+						{
+							player.setDataSource(fileName);
+							player.prepare();
+							player.start();
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+							Log.e("PLAYER", "prepare() failed");
+						}
 					}
 				});
 			}

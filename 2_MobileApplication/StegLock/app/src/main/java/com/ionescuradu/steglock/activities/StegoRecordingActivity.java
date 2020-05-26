@@ -75,11 +75,11 @@ public class StegoRecordingActivity extends AppCompatActivity
 				try
 				{
 					StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
-					StorageReference sentRecordings       = storageReference.child("SentRecordings/" + firebaseUser.getUid() + timestamp);
+					StorageReference sentRecordings   = storageReference.child("SentRecordings/" + firebaseUser.getUid() + timestamp);
 
-					FileInputStream       fis              = new FileInputStream(new File(fileName));
-					ByteArrayOutputStream bos              = new ByteArrayOutputStream();
-					byte[]                b                = new byte[2048];
+					FileInputStream       fis = new FileInputStream(new File(fileName));
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					byte[]                b   = new byte[2048];
 
 					for (int readNum; (readNum = fis.read(b)) != -1; )
 					{

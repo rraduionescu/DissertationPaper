@@ -146,7 +146,7 @@ public class MessageActivity extends AppCompatActivity
 			public void onClick(View v)
 			{
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				Intent intent = new Intent(getApplicationContext(), StegoRecordingActivity.class);
+				Intent    intent    = new Intent(getApplicationContext(), StegoRecordingActivity.class);
 				intent.putExtra("userId", userId);
 				intent.putExtra("timestamp", timestamp.toString());
 				startActivity(intent);
@@ -227,7 +227,7 @@ public class MessageActivity extends AppCompatActivity
 				bitmapImage = (Bitmap) data.getExtras().get("data");
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-				byte[]           bitmapData          = byteArrayOutputStream.toByteArray();
+				byte[] bitmapData = byteArrayOutputStream.toByteArray();
 
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
