@@ -88,6 +88,7 @@ public class StegoRecordingActivity extends AppCompatActivity
 
 					byte[] bytes = bos.toByteArray();
 					sentRecordings.putBytes(bytes);
+					Thread.sleep(2500);
 				}
 				catch (Exception e)
 				{

@@ -216,57 +216,26 @@ public class MessageActivity extends AppCompatActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		Bitmap bitmapImage;
+
 		if (requestCode == 2 && resultCode == RESULT_OK)
 		{
 			Uri image = data.getData();
-			try
-			{
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-				byte[] bitmapData = byteArrayOutputStream.toByteArray();
 
-				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
-				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				sentImages.putBytes(bitmapData);
-
-				Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
-				intent.putExtra("userId", userId);
-				intent.putExtra("timestamp", timestamp.toString());
-				startActivity(intent);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+			Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+			intent.putExtra("userId", userId);
+			intent.putExtra("imageURI", image.toString());
+			startActivity(intent);
 		}
 		else if (requestCode == 3 && resultCode == RESULT_OK)
 		{
 			File file  = new File(currentPhotoPath);
 			Uri  image = Uri.fromFile(file);
-			try
-			{
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-				byte[] bitmapData = byteArrayOutputStream.toByteArray();
 
-				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
-				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				sentImages.putBytes(bitmapData);
+			Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+			intent.putExtra("userId", userId);
+			intent.putExtra("imageURI", image.toString());
+			startActivity(intent);
 
-				Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
-				intent.putExtra("userId", userId);
-				intent.putExtra("timestamp", timestamp.toString());
-				startActivity(intent);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
 		}
 	}
 

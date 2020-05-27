@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
@@ -30,13 +33,10 @@ public class StegoImageActivity extends AppCompatActivity
 {
 	private FirebaseUser firebaseUser;
 	private ImageView    ivCoverImage;
-	private EditText     etSecretMessage;
-	private Button       bSendStegoImage;
-	private Intent       intent;
-	private String       timestamp;
-	private String       secretMessage;
+	private Timestamp    timestamp;
 	private String       userId;
 	private Bitmap       bitmapImage;
+	private byte[]       bitmapData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -44,50 +44,56 @@ public class StegoImageActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stego_image);
 
+		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+		ivCoverImage = findViewById(R.id.ivCoverImage);
+		EditText etSecretMessage = findViewById(R.id.etSecretMessage);
+		Button   bSendStegoImage = findViewById(R.id.bSendStegoImage);
+		Intent   intent          = getIntent();
+		userId = intent.getStringExtra("userId");
+		String secretMessage = etSecretMessage.getText().toString();
+		Uri    imageUri      = Uri.parse(intent.getStringExtra("imageURI"));
+
 		try
 		{
-			Thread.sleep(2000);
+			bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+			ivCoverImage.setImageBitmap(bitmapImage);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+			bitmapData = byteArrayOutputStream.toByteArray();
 		}
-		catch (InterruptedException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-		ivCoverImage = findViewById(R.id.ivCoverImage);
-		etSecretMessage = findViewById(R.id.etSecretMessage);
-		bSendStegoImage = findViewById(R.id.bSendStegoImage);
-		intent = getIntent();
-		timestamp = intent.getStringExtra("timestamp");
-		userId = intent.getStringExtra("userId");
-		secretMessage = etSecretMessage.getText().toString();
-
-		FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
-		StorageReference reference = storage.getReference().child("SentImages/" + firebaseUser.getUid() + timestamp);
-		reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
-		{
-			@Override
-			public void onSuccess(byte[] bytes)
-			{
-				bitmapImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-				ivCoverImage.setImageBitmap(bitmapImage);
-			}
-		});
 
 		bSendStegoImage.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
+				timestamp = new Timestamp(System.currentTimeMillis());
+
 				// TO-DO : Steganographic process
 				// Encrypt secretMessage String
-				// Embed secretMessage cipher into bitmapImage
-				// Delete original image, upload stego image
+				// Embed secretMessage cipher into bitmapData
+
+				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
+				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
+				sentImages.putBytes(bitmapData);
 
 				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
 				sendMessage(firebaseUser.getUid(), userId, message);
 
 				Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
 				intent.putExtra("userId", userId);
+				try
+				{
+					Thread.sleep(2500);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 				startActivity(intent);
 			}
 		});
