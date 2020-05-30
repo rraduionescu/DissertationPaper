@@ -75,7 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setVisibility(View.VISIBLE);
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes(1024 * 1024 * 5).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@Override
 					public void onSuccess(byte[] bytes)
@@ -97,7 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setImageDrawable(context.getDrawable(R.drawable.ic_play));
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes(1024 * 1024 * 10).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes(1024 * 256).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@Override
 					public void onSuccess(byte[] bytes)

@@ -32,10 +32,8 @@ import java.util.HashMap;
 public class StegoImageActivity extends AppCompatActivity
 {
 	private FirebaseUser firebaseUser;
-	private ImageView    ivCoverImage;
 	private Timestamp    timestamp;
 	private String       userId;
-	private Bitmap       bitmapImage;
 	private byte[]       bitmapData;
 
 	@Override
@@ -45,7 +43,7 @@ public class StegoImageActivity extends AppCompatActivity
 		setContentView(R.layout.activity_stego_image);
 
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-		ivCoverImage = findViewById(R.id.ivCoverImage);
+		ImageView ivCoverImage   = findViewById(R.id.ivCoverImage);
 		EditText etSecretMessage = findViewById(R.id.etSecretMessage);
 		Button   bSendStegoImage = findViewById(R.id.bSendStegoImage);
 		Intent   intent          = getIntent();
@@ -55,10 +53,10 @@ public class StegoImageActivity extends AppCompatActivity
 
 		try
 		{
-			bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+			Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
 			ivCoverImage.setImageBitmap(bitmapImage);
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+			bitmapImage.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
 			bitmapData = byteArrayOutputStream.toByteArray();
 		}
 		catch (Exception e)

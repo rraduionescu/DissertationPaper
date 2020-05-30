@@ -92,7 +92,8 @@ public class MessageActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				finish();
+				Intent intent = new Intent(getApplicationContext(), ChatTabActivity.class);
+				startActivity(intent);
 			}
 		});
 
