@@ -75,7 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setVisibility(View.VISIBLE);
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes(1024 * 1024 * 5).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes((int)(1024 * 1024 * 8)).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@Override
 					public void onSuccess(byte[] bytes)
@@ -104,7 +104,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 					{
 						try
 						{
-							//ByteArrayInputStream inputStream  = new ByteArrayInputStream(bytes);
 							FileOutputStream outputStream = new FileOutputStream(new File(fileName));
 							outputStream.write(bytes);
 						}

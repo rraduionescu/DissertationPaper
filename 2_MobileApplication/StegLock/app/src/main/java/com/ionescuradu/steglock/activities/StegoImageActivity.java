@@ -56,7 +56,7 @@ public class StegoImageActivity extends AppCompatActivity
 			Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
 			ivCoverImage.setImageBitmap(bitmapImage);
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			bitmapImage.compress(Bitmap.CompressFormat.PNG, 70, byteArrayOutputStream);
+			bitmapImage.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
 			bitmapData = byteArrayOutputStream.toByteArray();
 		}
 		catch (Exception e)

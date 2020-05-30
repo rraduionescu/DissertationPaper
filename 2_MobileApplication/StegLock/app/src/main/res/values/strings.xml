@@ -14,6 +14,7 @@
     <string name="etPasswordConfirmation">Password confirmation</string>
     <string name="etSearch">Search...</string>
     <string name="etSecretMessage">Input your secret message</string>
+    <string name="etEditNickname">New nickname</string>
 
     <!-- TextView Strings -->
     <string name="tvDont">Don\'t have an account?</string>
@@ -23,6 +24,7 @@
     <string name="tvSecretMessage">Secret Message</string>
     <string name="tvCoverImage">Cover Image</string>
     <string name="tvCoverRecording">Cover Recording</string>
+    <string name="tvEditNickname">Edit nickname</string>
 
     <!-- Button Strings -->
     <string name="bLogin">Log in</string>
@@ -38,6 +40,8 @@
     <string name="bStopPlay">Stop playing</string>
     <string name="bChat">Chat</string>
     <string name="bSend">Send</string>
+    <string name="bEditNickname">Apply</string>
+    <string name="bCancel">Cancel</string>
 
     <!-- Toast Strings -->
     <string name="tLogSuccess">Logged in as </string>

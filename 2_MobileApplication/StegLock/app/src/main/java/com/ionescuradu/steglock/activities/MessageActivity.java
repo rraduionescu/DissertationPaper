@@ -274,6 +274,7 @@ public class MessageActivity extends AppCompatActivity
 					LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
 					linearLayoutManager.setStackFromEnd(true);
 					recyclerViewMessages.setLayoutManager(linearLayoutManager);
+					recyclerViewMessages.setHasFixedSize(true);
 					recyclerViewMessages.setAdapter(messageAdapter);
 				}
 			}
