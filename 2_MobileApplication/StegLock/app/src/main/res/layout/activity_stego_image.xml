@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Created by Ionescu Radu Stefan -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".activities.StegoImageActivity">
+
+    <TextView
+        android:id="@+id/tvCoverImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/tvCoverImage"
+        android:textAlignment="center" />
+
+    <ImageView
+        android:id="@+id/ivCoverImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:contentDescription="@string/desc"
+        app:srcCompat="@drawable/logo"
+        android:layout_margin="10dp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
+    <TextView
+        android:id="@+id/tvSecretMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tvSecretMessage"
+        android:textAlignment="center"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/etSecretMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/etSecretMessage"
+        android:inputType="text"
+        android:importantForAutofill="no"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorAccent"
+        android:textColorHighlight="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
+    <Button
+        android:id="@+id/bSendStegoImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bSend"
+        android:layout_margin="8dp"
+        android:background="@drawable/bshape"/>
+
+</LinearLayout>

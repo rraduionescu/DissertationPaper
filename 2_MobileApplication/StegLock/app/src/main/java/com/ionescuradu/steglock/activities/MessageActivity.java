@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,7 +39,13 @@ import com.ionescuradu.steglock.adapters.MessageAdapter;
 import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.classes.User;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,11 +60,16 @@ public class MessageActivity extends AppCompatActivity
 	FirebaseUser      firebaseUser;
 	DatabaseReference databaseReference;
 	ImageButton       bSend;
+	ImageButton       bSendImage;
+	ImageButton       bSendPhoto;
+	ImageButton       bSendRecording;
 	EditText          etMessage;
 	Intent            intent;
 	MessageAdapter    messageAdapter;
 	List<Message>     messages;
 	RecyclerView      recyclerViewMessages;
+	String            userId;
+	String            currentPhotoPath;
 
 
 	@Override
@@ -76,15 +92,19 @@ public class MessageActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
-				finish();
+				Intent intent = new Intent(getApplicationContext(), ChatTabActivity.class);
+				startActivity(intent);
 			}
 		});
 
 		intent = getIntent();
-		String userId = intent.getStringExtra("userId");
+		userId = intent.getStringExtra("userId");
 		profilePicture = findViewById(R.id.profilePictureChat);
 		nickname = findViewById(R.id.nicknameChat);
 		bSend = findViewById(R.id.bSend);
+		bSendImage = findViewById(R.id.bSendImage);
+		bSendPhoto = findViewById(R.id.bSendPhoto);
+		bSendRecording = findViewById(R.id.bSendRecording);
 		etMessage = findViewById(R.id.etMessage);
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 		databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
@@ -105,6 +125,55 @@ public class MessageActivity extends AppCompatActivity
 					Toast.makeText(MessageActivity.this, R.string.msgError, Toast.LENGTH_SHORT).show();
 				}
 				etMessage.setText("");
+			}
+		});
+
+		bSendImage.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(intent, 2);
+			}
+		});
+
+		bSendPhoto.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent    = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				File   photoFile = null;
+				try
+				{
+					photoFile = createImageFile();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				if (photoFile != null)
+				{
+					Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+															  "com.example.android.fileprovider",
+															  photoFile);
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+					startActivityForResult(intent, 3);
+				}
+			}
+		});
+
+		bSendRecording.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				Intent    intent    = new Intent(getApplicationContext(), StegoRecordingActivity.class);
+				intent.putExtra("userId", userId);
+				intent.putExtra("timestamp", timestamp.toString());
+				startActivity(intent);
 			}
 		});
 
@@ -144,6 +213,33 @@ public class MessageActivity extends AppCompatActivity
 		});
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == 2 && resultCode == RESULT_OK)
+		{
+			Uri image = data.getData();
+
+			Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+			intent.putExtra("userId", userId);
+			intent.putExtra("imageURI", image.toString());
+			startActivity(intent);
+		}
+		else if (requestCode == 3 && resultCode == RESULT_OK)
+		{
+			File file  = new File(currentPhotoPath);
+			Uri  image = Uri.fromFile(file);
+
+			Intent intent = new Intent(getApplicationContext(), StegoImageActivity.class);
+			intent.putExtra("userId", userId);
+			intent.putExtra("imageURI", image.toString());
+			startActivity(intent);
+
+		}
+	}
+
 	private void sendMessage(String sender, String receiver, String message)
 	{
 		DatabaseReference       reference = FirebaseDatabase.getInstance().getReference();
@@ -178,6 +274,7 @@ public class MessageActivity extends AppCompatActivity
 					LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
 					linearLayoutManager.setStackFromEnd(true);
 					recyclerViewMessages.setLayoutManager(linearLayoutManager);
+					recyclerViewMessages.setHasFixedSize(true);
 					recyclerViewMessages.setAdapter(messageAdapter);
 				}
 			}
@@ -188,5 +285,20 @@ public class MessageActivity extends AppCompatActivity
 
 			}
 		});
+	}
+
+	private File createImageFile() throws IOException
+	{
+		String timeStamp     = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = "JPEG_" + timeStamp + "_";
+		File   storageDir    = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File image = File.createTempFile(
+				imageFileName,  /* prefix */
+				".png",         /* suffix */
+				storageDir      /* directory */
+										);
+
+		currentPhotoPath = image.getAbsolutePath();
+		return image;
 	}
 }

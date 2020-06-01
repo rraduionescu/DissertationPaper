@@ -2,7 +2,7 @@
 
 <!-- Created by Ionescu Radu Stefan -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +29,23 @@
                 android:paddingTop="15dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="15dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/logo" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/bEditProfilePicture"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/background"
+                android:foreground="@drawable/ic_edit"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -37,21 +53,42 @@
                 android:text="@string/tvNickname"
                 android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/etNicknameProfile"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:hint="@string/desc"
-                android:importantForAutofill="no"
-                android:inputType="text|textPersonName"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textColorHighlight="@color/colorAccent"
-                android:textColorHint="@color/colorAccent"
-                tools:layout_editor_absoluteX="399dp"
-                tools:layout_editor_absoluteY="405dp" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etNicknameProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="@string/desc"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textPersonName"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHighlight="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"
+                    tools:layout_editor_absoluteX="399dp"
+                    tools:layout_editor_absoluteY="405dp"
+                    android:layout_weight="28"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="0dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/bEditNickname"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/background"
+                    android:foreground="@drawable/ic_edit"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -121,4 +158,4 @@
 
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

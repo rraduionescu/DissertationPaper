@@ -58,7 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etMessage"
-            android:inputType="text"
+            android:backgroundTint="@color/colorAccent"
+            android:inputType="textCapSentences"
             android:layout_toStartOf="@+id/bSend"
             android:layout_centerVertical="true"
             android:hint="@string/etMessage"
@@ -68,11 +69,45 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/bSend"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
             android:background="@color/background"
-            android:foreground="@drawable/ic_action_name"
+            android:foreground="@drawable/ic_send"
+            android:layout_toStartOf="@+id/bSendImage"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bSendImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/background"
+            android:foreground="@drawable/ic_image"
+            android:layout_toStartOf="@+id/bSendPhoto"
+            android:layout_marginStart="10dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bSendPhoto"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/background"
+            android:foreground="@drawable/ic_photo"
+            android:layout_toStartOf="@+id/bSendRecording"
+            android:layout_marginStart="10dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bSendRecording"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/background"
+            android:foreground="@drawable/ic_recording"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
             />
 
     </RelativeLayout>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 
+		Button bRegisterActivity = findViewById(R.id.bRegisterActivity);
 		etNickname = findViewById(R.id.etNicknameRegister);
 		etFirstName = findViewById(R.id.etFirstName);
 		etLastName = findViewById(R.id.etLastName);
@@ -80,8 +82,8 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view)
 			{
-				Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(i, 2);
+				Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				startActivityForResult(intent, 2);
 			}
 		});
 
@@ -90,11 +92,11 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Pattern.compile("[a-z]{1,15}?");
-				Matcher m = p.matcher(text);
-				if (!m.matches())
+				Pattern pattern = Pattern.compile("[a-z0-9._]{1,15}?");
+				Matcher matcher = pattern.matcher(text);
+				if (!matcher.matches())
 				{
-					textView.setError(getResources().getString(R.string.fnError));
+					textView.setError(getResources().getString(R.string.nnError));
 				}
 			}
 		});
@@ -104,9 +106,9 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Pattern.compile("[A-Z][a-z]{1,15}?");
-				Matcher m = p.matcher(text);
-				if (!m.matches())
+				Pattern pattern = Pattern.compile("[A-Z][a-z]{1,15}?");
+				Matcher matcher = pattern.matcher(text);
+				if (!matcher.matches())
 				{
 					textView.setError(getResources().getString(R.string.fnError));
 				}
@@ -118,9 +120,9 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Pattern.compile("[A-Z][a-z]{1,15}?");
-				Matcher m = p.matcher(text);
-				if (!m.matches())
+				Pattern pattern = Pattern.compile("[A-Z][a-z]{1,15}?");
+				Matcher matcher = pattern.matcher(text);
+				if (!matcher.matches())
 				{
 					textView.setError(getResources().getString(R.string.lnError));
 				}
@@ -132,9 +134,9 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Patterns.EMAIL_ADDRESS;
-				Matcher m = p.matcher(text);
-				if (!m.matches())
+				Pattern pattern = Patterns.EMAIL_ADDRESS;
+				Matcher matcher = pattern.matcher(text);
+				if (!matcher.matches())
 				{
 					textView.setError(getResources().getString(R.string.eError));
 				}
@@ -146,9 +148,9 @@ public class RegisterActivity extends AppCompatActivity
 			@Override
 			public void validate(TextView textView, String text)
 			{
-				Pattern p = Pattern.compile("[a-zA-Z0-9]{10,15}");
-				Matcher m = p.matcher(text);
-				if (!m.matches())
+				Pattern pattern = Pattern.compile("[a-zA-Z0-9]{10,15}");
+				Matcher matcher = pattern.matcher(text);
+				if (!matcher.matches())
 				{
 					textView.setError(getResources().getString(R.string.psError));
 				}
@@ -167,7 +169,7 @@ public class RegisterActivity extends AppCompatActivity
 			}
 		});
 
-		findViewById(R.id.bRegisterActivity).setOnClickListener(new View.OnClickListener()
+		bRegisterActivity.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -189,23 +191,22 @@ public class RegisterActivity extends AppCompatActivity
 				}
 			}
 		});
-
-
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		Bitmap bmpImg;
+
+		Bitmap bitmapImage;
 		if (requestCode == 2 && resultCode == RESULT_OK)
 		{
-			Uri img = data.getData();
+			Uri image = data.getData();
 			try
 			{
-				bmpImg = MediaStore.Images.Media.getBitmap(getContentResolver(), img);
-				int   h     = bmpImg.getHeight();
-				int   w     = bmpImg.getWidth();
+				bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
+				int   h     = bitmapImage.getHeight();
+				int   w     = bitmapImage.getWidth();
 				float ratio = (float) h / w;
 				if (ratio < 0.8 || ratio > 1.2)
 				{
@@ -214,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity
 				}
 				else
 				{
-					ivProfile.setImageBitmap(Bitmap.createScaledBitmap(bmpImg, 100, 100, false));
+					ivProfile.setImageBitmap(bitmapImage);
 					etR.setError(null);
 					etL.setError(null);
 					etR.clearFocus();
@@ -236,24 +237,23 @@ public class RegisterActivity extends AppCompatActivity
 			{
 				if (task.isSuccessful())
 				{
-					FirebaseStorage storage = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 					firebaseUser = firebaseAuth.getCurrentUser();
+					UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(etFirstName.getText() + " " + etLastName.getText()).build();
+					firebaseUser.updateProfile(profileUpdates);
+
+					Bitmap                bitmapImage           = ((BitmapDrawable) (ivProfile.getDrawable())).getBitmap();
+					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+					bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+					byte[]           data             = byteArrayOutputStream.toByteArray();
+					StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference().child("ProfilePictures/" + firebaseUser.getUid());
+					storageReference.putBytes(data);
+
 					databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 					HashMap<String, String> details = new HashMap<>();
 					details.put("id", firebaseUser.getUid());
 					details.put("first_name", etFirstName.getText().toString());
 					details.put("last_name", etLastName.getText().toString());
 					details.put("nickname", etNickname.getText().toString());
-					UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(etFirstName.getText() + " " + etLastName.getText()).build();
-					firebaseUser.updateProfile(profileUpdates);
-					BitmapDrawable        drawable              = (BitmapDrawable) ivProfile.getDrawable();
-					Bitmap                bitmap                = drawable.getBitmap();
-					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-					byte[]           data             = byteArrayOutputStream.toByteArray();
-					StorageReference storageReference = storage.getReference();
-					StorageReference profiles         = storageReference.child("ProfilePictures/" + firebaseUser.getUid());
-					profiles.putBytes(data);
 					databaseReference.setValue(details).addOnCompleteListener(new OnCompleteListener<Void>()
 					{
 						@Override
@@ -278,10 +278,10 @@ public class RegisterActivity extends AppCompatActivity
 	{
 		if (user != null)
 		{
-			Toast.makeText(getApplicationContext(), ((EditText) findViewById(R.id.etFirstName)).getText() + " " + ((EditText) findViewById(R.id.etLastName)).getText() + getResources().getString(R.string.tRegSuccess), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), firebaseUser.getDisplayName() + getResources().getString(R.string.tRegSuccess), Toast.LENGTH_SHORT).show();
 			firebaseAuth.signOut();
-			Intent i = new Intent(getApplicationContext(), MainActivity.class);
-			startActivity(i);
+			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+			startActivity(intent);
 		}
 	}
 }
