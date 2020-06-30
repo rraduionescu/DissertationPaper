@@ -82,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				holder.ivChat.setVisibility(View.VISIBLE);
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
-				reference.getBytes((int)(1024 * 1024 * 8)).addOnSuccessListener(new OnSuccessListener<byte[]>()
+				reference.getBytes((int) (1024 * 1024 * 8)).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
 					@RequiresApi(api = Build.VERSION_CODES.O)
 					@Override
@@ -91,7 +91,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 						holder.ivChat.setImageBitmap(bitmap);
 						String message = StegoEngine.extract(holder.ivChat, uid);
-						Log.e("  SECRET  ", message);
 						holder.ivChat.setOnLongClickListener(new View.OnLongClickListener()
 						{
 							@Override
@@ -222,6 +221,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 	public void openDialog(String message)
 	{
 		SecretMessageDialog secretMessageDialog = new SecretMessageDialog(message, context);
-		secretMessageDialog.show(((FragmentActivity)context).getSupportFragmentManager(), "dialog");
+		secretMessageDialog.show(((FragmentActivity) context).getSupportFragmentManager(), "dialog");
 	}
 }

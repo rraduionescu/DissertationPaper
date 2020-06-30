@@ -75,12 +75,17 @@ public class StegoEngine
 		return null;
 	}
 
-	public static byte[] embed(byte[] cipher, ImageView img)
+	public static byte[] embed(byte[] cipher, ImageView image)
 	{
 		int       cipherLength = cipher.length * 8;
 		boolean[] bits         = new boolean[32 + cipherLength];
 
+		Log.e("cipher length", cipherLength+"");
+
 		String binary = Integer.toBinaryString(cipherLength);
+
+		Log.e("binary" , binary);
+
 		while (binary.length() < 32)
 		{
 			binary = 0 + binary;
@@ -99,17 +104,17 @@ public class StegoEngine
 			}
 		}
 
-		Bitmap         bmap;
-		BitmapDrawable bmapD = (BitmapDrawable) img.getDrawable();
-		bmap = bmapD.getBitmap();
-		Bitmap operation = Bitmap.createBitmap(bmap.getWidth(), bmap.getHeight(), Bitmap.Config.ARGB_8888);
+		Bitmap         bitmap;
+		BitmapDrawable bitmapDrawable = (BitmapDrawable) image.getDrawable();
+		bitmap = bitmapDrawable.getBitmap();
+		Bitmap operation = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 		int    count     = 0;
 
-		for (int i = 0; i < bmap.getWidth(); i++)
+		for (int i = 0; i < bitmap.getWidth(); i++)
 		{
-			for (int j = 0; j < bmap.getHeight(); j++)
+			for (int j = 0; j < bitmap.getHeight(); j++)
 			{
-				int p = bmap.getPixel(i, j);
+				int p = bitmap.getPixel(i, j);
 
 				int r = Color.red(p);
 				int g = Color.green(p);
@@ -155,6 +160,7 @@ public class StegoEngine
 				{
 					operation.setPixel(i, j, Color.argb(a, r, g, b));
 				}
+				Log.e("pixel value", Integer.toBinaryString(operation.getPixel(i,j)));
 			}
 		}
 
@@ -162,26 +168,6 @@ public class StegoEngine
 		operation.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
 		return stream.toByteArray();
-
-		/*for (int i = 0; i < bits.length; i++)
-		{
-			if(bits[i] == true)
-			{
-				if((bitmapData[i+60] & 0b0000_0001) == 0);
-				{
-					bitmapData[i+60]--;
-				}
-			}
-			else
-			{
-				if((~bitmapData[i+60] & 0b0000_0001) == 0)
-				{
-					bitmapData[i+60]--;
-				}
-			}
-		}
-
-		return bitmapData;*/
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.O)
@@ -210,7 +196,6 @@ public class StegoEngine
 		}
 
 		int l = Integer.parseInt(length.toString(), 2);
-		Log.e(" length ", "" + l);
 		int           count            = 0;
 		StringBuilder cipherStringBits = new StringBuilder();
 

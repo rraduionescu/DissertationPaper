@@ -61,7 +61,14 @@ public class StegoImageActivity extends AppCompatActivity
 		try
 		{
 			Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-			ivCoverImage.setImageBitmap(bitmapImage);
+			if(bitmapImage.getHeight() > 1500 || bitmapImage.getWidth() > 1500)
+			{
+				ivCoverImage.setImageBitmap(Bitmap.createScaledBitmap(bitmapImage, (int)(bitmapImage.getWidth()*0.3), (int)(bitmapImage.getHeight()*0.3), false));
+			}
+			else
+			{
+				ivCoverImage.setImageBitmap(bitmapImage);
+			}
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 			bitmapData = byteArrayOutputStream.toByteArray();
