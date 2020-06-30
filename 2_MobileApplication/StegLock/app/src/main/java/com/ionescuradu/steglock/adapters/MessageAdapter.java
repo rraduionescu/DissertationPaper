@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +26,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.classes.Message;
+import com.ionescuradu.steglock.dialogs.EditNicknameDialog;
+import com.ionescuradu.steglock.dialogs.SecretMessageDialog;
+import com.ionescuradu.steglock.steganography.StegoEngine;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -71,17 +77,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		{
 			if (message.getMessage().substring(0, 5).compareToIgnoreCase("SentI") == 0)
 			{
+				String uid = message.getSender();
 				holder.tvMessage.setVisibility(View.GONE);
 				holder.ivChat.setVisibility(View.VISIBLE);
 				FirebaseStorage  storage   = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com");
 				StorageReference reference = storage.getReference().child(message.getMessage());
 				reference.getBytes((int)(1024 * 1024 * 8)).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
+					@RequiresApi(api = Build.VERSION_CODES.O)
 					@Override
 					public void onSuccess(byte[] bytes)
 					{
 						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 						holder.ivChat.setImageBitmap(bitmap);
+						String message = StegoEngine.extract(holder.ivChat, uid);
+						Log.e("  SECRET  ", message);
+						holder.ivChat.setOnLongClickListener(new View.OnLongClickListener()
+						{
+							@Override
+							public boolean onLongClick(View v)
+							{
+								openDialog(message);
+								return true;
+							}
+						});
 					}
 				});
 			}
@@ -198,5 +217,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 		{
 			return MSG_TYPE_LEFT;
 		}
+	}
+
+	public void openDialog(String message)
+	{
+		SecretMessageDialog secretMessageDialog = new SecretMessageDialog(message, context);
+		secretMessageDialog.show(((FragmentActivity)context).getSupportFragmentManager(), "dialog");
 	}
 }
