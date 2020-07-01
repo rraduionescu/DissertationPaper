@@ -34,6 +34,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 //  Created by Ionescu Radu Stefan  //
@@ -97,7 +100,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 							public boolean onLongClick(View v)
 							{
 								openDialog(message);
-								return true;
+								return false;
 							}
 						});
 					}
@@ -117,13 +120,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 				StorageReference reference = storage.getReference().child(message.getMessage());
 				reference.getBytes(1024 * 256).addOnSuccessListener(new OnSuccessListener<byte[]>()
 				{
+					@RequiresApi(api = Build.VERSION_CODES.O)
 					@Override
 					public void onSuccess(byte[] bytes)
 					{
 						try
 						{
+							/*byte[] length = new byte[4];
+							length[0] = bytes[0];
+							length[1] = bytes[1];
+							length[2] = bytes[2];
+							length[3] = bytes[3];
+							ByteBuffer       wrapped      = ByteBuffer.wrap(length);
+							int              num          = wrapped.getInt();
+							byte[]           recording    = Arrays.copyOfRange(bytes, 4 + num, bytes.length);*/
 							FileOutputStream outputStream = new FileOutputStream(new File(fileName));
+							/*byte[]           cipher       = Arrays.copyOfRange(bytes, 4, 4 + num);
+							String secret = StegoEngine.decrypt(new String(cipher), message.getSender());*/
+							holder.ivChat.setOnLongClickListener(new View.OnLongClickListener()
+							{
+								@Override
+								public boolean onLongClick(View v)
+								{
+									openDialog("test");
+									return false;
+								}
+							});
 							outputStream.write(bytes);
+							//outputStream.write(recording);
 						}
 						catch (Exception e)
 						{

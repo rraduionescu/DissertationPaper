@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Base64;
@@ -79,12 +80,7 @@ public class StegoEngine
 	{
 		int       cipherLength = cipher.length * 8;
 		boolean[] bits         = new boolean[32 + cipherLength];
-
-		Log.e("cipher length", cipherLength + "");
-
-		String binary = Integer.toBinaryString(cipherLength);
-
-		Log.e("binary", binary);
+		String    binary       = Integer.toBinaryString(cipherLength);
 
 		while (binary.length() < 32)
 		{
@@ -127,11 +123,11 @@ public class StegoEngine
 					{
 						if (b > 1)
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b-1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b - 1));
 						}
 						else
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b+1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b + 1));
 						}
 						count++;
 					}
@@ -139,11 +135,11 @@ public class StegoEngine
 					{
 						if (b > 1)
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b-1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b - 1));
 						}
 						else
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b+1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b + 1));
 						}
 						count++;
 					}
@@ -169,6 +165,49 @@ public class StegoEngine
 		operation.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
 		return stream.toByteArray();
+	}
+
+	public static byte[] embedAudio(byte[] cipher, byte[] audio)
+	{
+		int       cipherLength = cipher.length * 8;
+		boolean[] bits         = new boolean[32 + cipherLength];
+		String    binary       = Integer.toBinaryString(cipherLength);
+
+		while (binary.length() < 32)
+		{
+			binary = 0 + binary;
+		}
+		for (int i = 0; i < 32; i++)
+		{
+			bits[i] = binary.charAt(i) == '1';
+		}
+
+		for (int i = 0; i < cipher.length; i++)
+		{
+			byte b = cipher[i];
+			for (int j = 0; j < 8; j++)
+			{
+				bits[32 + i * 8 + j] = ((b >> (7 - j)) & 1) == 1;
+			}
+		}
+
+		byte[]     embedded = new byte[audio.length + 4 + cipher.length];
+		ByteBuffer bytes    = ByteBuffer.allocate(4).putInt(cipher.length);
+		byte[]     array    = bytes.array();
+		for (int i = 0; i < 4; i++)
+		{
+			embedded[i] = array[i];
+		}
+		for (int i = 4; i < cipher.length + 4; i++)
+		{
+			embedded[i] = cipher[i];
+		}
+		for (int i = cipher.length + 4; i < audio.length + cipher.length + 4; i++)
+		{
+			embedded[i] = audio[i];
+		}
+
+		return embedded;
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.O)
