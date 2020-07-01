@@ -80,11 +80,11 @@ public class StegoEngine
 		int       cipherLength = cipher.length * 8;
 		boolean[] bits         = new boolean[32 + cipherLength];
 
-		Log.e("cipher length", cipherLength+"");
+		Log.e("cipher length", cipherLength + "");
 
 		String binary = Integer.toBinaryString(cipherLength);
 
-		Log.e("binary" , binary);
+		Log.e("binary", binary);
 
 		while (binary.length() < 32)
 		{
@@ -107,7 +107,7 @@ public class StegoEngine
 		Bitmap         bitmap;
 		BitmapDrawable bitmapDrawable = (BitmapDrawable) image.getDrawable();
 		bitmap = bitmapDrawable.getBitmap();
-		Bitmap operation = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+		Bitmap operation = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
 		int    count     = 0;
 
 		for (int i = 0; i < bitmap.getWidth(); i++)
@@ -123,36 +123,38 @@ public class StegoEngine
 
 				if (count < 32 + cipherLength)
 				{
-					if (bits[count] && g % 2 == 0)
+					if (bits[count] && b % 2 == 0)
 					{
 						if (b > 1)
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b - 1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b-1));
 						}
 						else
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b + 1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b+1));
 						}
 						count++;
 					}
-					else if (!bits[count] && g % 2 == 1)
+					else if (!bits[count] && b % 2 == 1)
 					{
 						if (b > 1)
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b - 1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b-1));
 						}
 						else
 						{
-							operation.setPixel(i, j, Color.argb(a, r, g, b + 1));
+							operation.setPixel(i, j, Color.argb(a, r, g, b+1));
 						}
 						count++;
 					}
-					else if (bits[count] && g % 2 == 1)
+					else if (bits[count] && b % 2 == 1)
 					{
+						operation.setPixel(i, j, Color.argb(a, r, g, b));
 						count++;
 					}
-					else if (!bits[count] && g % 2 == 0)
+					else if (!bits[count] && b % 2 == 0)
 					{
+						operation.setPixel(i, j, Color.argb(a, r, g, b));
 						count++;
 					}
 				}
@@ -160,7 +162,6 @@ public class StegoEngine
 				{
 					operation.setPixel(i, j, Color.argb(a, r, g, b));
 				}
-				Log.e("pixel value", Integer.toBinaryString(operation.getPixel(i,j)));
 			}
 		}
 
@@ -196,10 +197,11 @@ public class StegoEngine
 		}
 
 		int l = Integer.parseInt(length.toString(), 2);
+		Log.e("extract len", l + "");
 		int           count            = 0;
 		StringBuilder cipherStringBits = new StringBuilder();
 
-		for (int i = 0; i < bitmap.getWidth(); i++)
+		for (int i = 0; i < bitmap.getWidth() && count < l; i++)
 		{
 			for (int j = 0; j < bitmap.getHeight(); j++)
 			{
@@ -221,6 +223,10 @@ public class StegoEngine
 							cipherStringBits.append('1');
 							count++;
 						}
+					}
+					else
+					{
+						break;
 					}
 				}
 			}

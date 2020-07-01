@@ -51,24 +51,17 @@ public class StegoImageActivity extends AppCompatActivity
 		setContentView(R.layout.activity_stego_image);
 
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-		ImageView ivCoverImage   = findViewById(R.id.ivCoverImage);
-		EditText etSecretMessage = findViewById(R.id.etSecretMessage);
-		Button   bSendStegoImage = findViewById(R.id.bSendStegoImage);
-		Intent   intent          = getIntent();
+		ImageView ivCoverImage    = findViewById(R.id.ivCoverImage);
+		EditText  etSecretMessage = findViewById(R.id.etSecretMessage);
+		Button    bSendStegoImage = findViewById(R.id.bSendStegoImage);
+		Intent    intent          = getIntent();
 		userId = intent.getStringExtra("userId");
-		Uri    imageUri      = Uri.parse(intent.getStringExtra("imageURI"));
+		Uri imageUri = Uri.parse(intent.getStringExtra("imageURI"));
 
 		try
 		{
 			Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-			if(bitmapImage.getHeight() > 1500 || bitmapImage.getWidth() > 1500)
-			{
-				ivCoverImage.setImageBitmap(Bitmap.createScaledBitmap(bitmapImage, (int)(bitmapImage.getWidth()*0.3), (int)(bitmapImage.getHeight()*0.3), false));
-			}
-			else
-			{
-				ivCoverImage.setImageBitmap(bitmapImage);
-			}
+			ivCoverImage.setImageBitmap(bitmapImage);
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 			bitmapData = byteArrayOutputStream.toByteArray();
