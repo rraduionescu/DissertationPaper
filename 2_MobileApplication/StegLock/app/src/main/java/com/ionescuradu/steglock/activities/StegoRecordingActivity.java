@@ -1,6 +1,7 @@
 package com.ionescuradu.steglock.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -10,11 +11,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.steganography.StegoEngine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +50,8 @@ public class StegoRecordingActivity extends AppCompatActivity
 	private              FirebaseUser                      firebaseUser;
 	private              String                            userId;
 	private              String                            timestamp;
+	private              byte[]                            cipherText;
+	private              byte[]                            embeddedAudio;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,8 +62,9 @@ public class StegoRecordingActivity extends AppCompatActivity
 		fileName = getExternalCacheDir().getAbsolutePath();
 		fileName += "/recording.3gp";
 		ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-		LinearLayout llRecord = findViewById(R.id.llRecord);
-		Button       bSend    = findViewById(R.id.bSendStegoRecording);
+		LinearLayout llRecord        = findViewById(R.id.llRecord);
+		EditText     etSecretMessage = findViewById(R.id.etSecretMessage);
+		Button       bSend           = findViewById(R.id.bSendStegoRecording);
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 		userId = getIntent().getStringExtra("userId");
 		timestamp = getIntent().getStringExtra("timestamp");
@@ -65,12 +72,12 @@ public class StegoRecordingActivity extends AppCompatActivity
 
 		bSend.setOnClickListener(new View.OnClickListener()
 		{
+			@RequiresApi(api = Build.VERSION_CODES.O)
 			@Override
 			public void onClick(View v)
 			{
-				// TO-DO : Steganographic process
-				// Encrypt secretMessage String
-				// Embed secretMessage cipher into recording file
+				String secretMessage = etSecretMessage.getText().toString();
+				cipherText = StegoEngine.encrypt(secretMessage, firebaseUser.getUid()).getBytes();
 
 				try
 				{
@@ -87,7 +94,9 @@ public class StegoRecordingActivity extends AppCompatActivity
 					}
 
 					byte[] bytes = bos.toByteArray();
+					//embeddedAudio = StegoEngine.embedAudio(cipherText, bytes);
 					sentRecordings.putBytes(bytes);
+					//sentRecordings.putBytes(embeddedAudio);
 					Thread.sleep(2500);
 				}
 				catch (Exception e)

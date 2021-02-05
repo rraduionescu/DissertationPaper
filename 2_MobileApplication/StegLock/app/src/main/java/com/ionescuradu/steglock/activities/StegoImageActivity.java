@@ -1,11 +1,13 @@
 package com.ionescuradu.steglock.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -22,8 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ionescuradu.steglock.R;
+import com.ionescuradu.steglock.steganography.StegoEngine;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
@@ -35,6 +41,8 @@ public class StegoImageActivity extends AppCompatActivity
 	private Timestamp    timestamp;
 	private String       userId;
 	private byte[]       bitmapData;
+	private byte[]       cipherText;
+	private byte[]       embeddedBitmapData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,20 +51,19 @@ public class StegoImageActivity extends AppCompatActivity
 		setContentView(R.layout.activity_stego_image);
 
 		firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-		ImageView ivCoverImage   = findViewById(R.id.ivCoverImage);
-		EditText etSecretMessage = findViewById(R.id.etSecretMessage);
-		Button   bSendStegoImage = findViewById(R.id.bSendStegoImage);
-		Intent   intent          = getIntent();
+		ImageView ivCoverImage    = findViewById(R.id.ivCoverImage);
+		EditText  etSecretMessage = findViewById(R.id.etSecretMessage);
+		Button    bSendStegoImage = findViewById(R.id.bSendStegoImage);
+		Intent    intent          = getIntent();
 		userId = intent.getStringExtra("userId");
-		String secretMessage = etSecretMessage.getText().toString();
-		Uri    imageUri      = Uri.parse(intent.getStringExtra("imageURI"));
+		Uri imageUri = Uri.parse(intent.getStringExtra("imageURI"));
 
 		try
 		{
 			Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
 			ivCoverImage.setImageBitmap(bitmapImage);
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			bitmapImage.compress(Bitmap.CompressFormat.PNG, 10, byteArrayOutputStream);
+			bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
 			bitmapData = byteArrayOutputStream.toByteArray();
 		}
 		catch (Exception e)
@@ -66,18 +73,19 @@ public class StegoImageActivity extends AppCompatActivity
 
 		bSendStegoImage.setOnClickListener(new View.OnClickListener()
 		{
+			@RequiresApi(api = Build.VERSION_CODES.O)
 			@Override
 			public void onClick(View v)
 			{
 				timestamp = new Timestamp(System.currentTimeMillis());
+				String secretMessage = etSecretMessage.getText().toString();
 
-				// TO-DO : Steganographic process
-				// Encrypt secretMessage String
-				// Embed secretMessage cipher into bitmapData
+				cipherText = StegoEngine.encrypt(secretMessage, firebaseUser.getUid()).getBytes();
+				embeddedBitmapData = StegoEngine.embed(cipherText, ivCoverImage);
 
 				StorageReference storageReference = FirebaseStorage.getInstance("gs://steglockmapp.appspot.com").getReference();
 				StorageReference sentImages       = storageReference.child("SentImages/" + firebaseUser.getUid() + timestamp);
-				sentImages.putBytes(bitmapData);
+				sentImages.putBytes(embeddedBitmapData);
 
 				String message = "SentImages/" + firebaseUser.getUid() + timestamp;
 				sendMessage(firebaseUser.getUid(), userId, message);

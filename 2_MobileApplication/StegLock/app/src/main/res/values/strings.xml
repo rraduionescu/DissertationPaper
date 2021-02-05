@@ -66,8 +66,8 @@
     <string name="desc">description</string>
 
     <!-- About Strings -->
-    <string name="about1">About StegLock application</string>
-    <string name="about2">StegLock application description</string>
+    <string name="about1">The main objective of the StegLock mobile application is to secure the communication of sensitive information, interchanged by two parties. Also, the existence of the secret messages should not be detected. The StegLock mobile application works as a simple chat solution, which can be used to send text messages, images and audio recordings, but the multimedia files may contain hidden text messages.</string>
+    <string name="about2">The StegLock mobile application can be used as a basic chat application. If the user wants to send multimedia files, he can also choose to embed a secret message into the file. If a secret message is embedded into the sent file, a long press on the image or recording will extract and display the secret message in a dialog.</string>
 
     <!-- Firebase Strings -->
     <string name="oauth" tools:ignore="MissingTranslation">1068587871489-b5vdetfis6h04rhv6s60n8g43pjtj8sa.apps.googleusercontent.com</string>

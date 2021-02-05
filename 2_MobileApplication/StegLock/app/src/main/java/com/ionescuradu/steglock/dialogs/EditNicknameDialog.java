@@ -7,11 +7,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.ionescuradu.steglock.R;
 import com.ionescuradu.steglock.utilities.TextValidator;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,7 +88,6 @@ public class EditNicknameDialog extends AppCompatDialogFragment
 
 		try
 		{
-
 			View               view = getActivity().getCurrentFocus();
 			InputMethodManager imm  = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
